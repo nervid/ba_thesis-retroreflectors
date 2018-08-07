@@ -1,0 +1,15 @@
+* RF-Retroreflectors: The Use of Backscatter in Short Range Communication
+
+** Abstract
+
+Today's Internet of Things (IoT) calls for technologies that make short-range communication more economical and energy efficient.
+Sensors for the IoT are primarily implemented as active devices that transmit data in one of the industrial, scientific and medical (ISM) frequency bands. To implement an active transmitters many components like oscillators and amplifiers are needed and therefore cost and energy requirements increase.
+In this bachelor thesis a different approach will be implemented and evaluated. It presents sensors that do not transmit any power on their own, but use modulated reflections to convey data back to a base station. This concept makes sensors exceptionally power-efficient and offloads nearly all radio frequency (RF) circuits to the base station, decreasing the cost of the sensor. Furthermore this thesis examines important concepts and implementation details for all necessary parts of such a system using a software-defined-radio (SDR) as part of the base station. 
+
+** 
+
+This repository contains all programs, CAD files and documentation necessary to implement
+the concepts described in my thesis. 
+
+
+

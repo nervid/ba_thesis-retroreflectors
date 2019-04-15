@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/qa_backscatter_decoder.cc
+qa_backscatter_decoder.h
+/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/qa_backscatter_decoder.h
+
+/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/qa_backscatter_decoder.h
+gnuradio/attributes.h
+-
+cppunit/TestSuite.h
+-
+
+/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/test_backscatter_decoder.cc
+config.h
+/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/config.h
+cppunit/TextTestRunner.h
+-
+cppunit/XmlOutputter.h
+-
+gnuradio/unittests.h
+-
+qa_backscatter_decoder.h
+/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/qa_backscatter_decoder.h
+iostream
+-
+fstream
+-
+

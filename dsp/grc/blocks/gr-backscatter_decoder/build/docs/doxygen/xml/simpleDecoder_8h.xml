@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="simpleDecoder_8h" kind="file" language="C++">
+    <compoundname>simpleDecoder.h</compoundname>
+    <includes refid="api_8h" local="no">backscatter_decoder/api.h</includes>
+    <includes local="no">gnuradio/block.h</includes>
+    <includedby refid="simpleDecoder__impl_8h" local="no">simpleDecoder_impl.h</includedby>
+    <incdepgraph>
+      <node id="11">
+        <label>gnuradio/attributes.h</label>
+      </node>
+      <node id="10">
+        <label>backscatter_decoder/api.h</label>
+        <link refid="api_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>gnuradio/block.h</label>
+      </node>
+      <node id="9">
+        <label>simpleDecoder.h</label>
+        <link refid="simpleDecoder_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="14">
+        <label>simpleDecoder_impl.h</label>
+        <link refid="simpleDecoder__impl_8h"/>
+      </node>
+      <node id="13">
+        <label>simpleDecoder.h</label>
+        <link refid="simpleDecoder_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classgr_1_1backscatter__decoder_1_1simpleDecoder" prot="public">gr::backscatter_decoder::simpleDecoder</innerclass>
+    <innernamespace refid="namespacegr">gr</innernamespace>
+    <innernamespace refid="namespacegr_1_1backscatter__decoder">gr::backscatter_decoder</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/include/backscatter_decoder/simpleDecoder.h"/>
+  </compounddef>
+</doxygen>

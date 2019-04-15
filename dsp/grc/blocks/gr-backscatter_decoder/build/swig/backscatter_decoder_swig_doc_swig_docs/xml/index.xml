@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.14">
+  <compound refid="classgr_1_1backscatter__decoder_1_1simpleDecoder" kind="class"><name>gr::backscatter_decoder::simpleDecoder</name>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder_1afebea19c13ce3fab6c1fae12590546fe" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder_1ac4c1caba67fe2bf93afb0e0aa59bd857" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="namespacegr" kind="namespace"><name>gr</name>
+  </compound>
+  <compound refid="namespacegr_1_1backscatter__decoder" kind="namespace"><name>gr::backscatter_decoder</name>
+  </compound>
+  <compound refid="namespacestd" kind="namespace"><name>std</name>
+  </compound>
+  <compound refid="api_8h" kind="file"><name>api.h</name>
+    <member refid="api_8h_1ab7bdd6c8cfbf30698efb126f38726c28" kind="define"><name>BACKSCATTER_DECODER_API</name></member>
+  </compound>
+  <compound refid="simpleDecoder_8h" kind="file"><name>simpleDecoder.h</name>
+  </compound>
+  <compound refid="dir_5196ab03d176df81b72f674ae3b0f5cf" kind="dir"><name>/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/include/backscatter_decoder</name>
+  </compound>
+  <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/include</name>
+  </compound>
+</doxygenindex>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="namespacegr_1_1backscatter__decoder" kind="namespace" language="C++">
+    <compoundname>gr::backscatter_decoder</compoundname>
+    <innerclass refid="classgr_1_1backscatter__decoder_1_1simpleDecoder" prot="public">gr::backscatter_decoder::simpleDecoder</innerclass>
+    <innerclass refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl" prot="public">gr::backscatter_decoder::simpleDecoder_impl</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/include/backscatter_decoder/simpleDecoder.h" line="29" column="1"/>
+  </compounddef>
+</doxygen>

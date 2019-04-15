@@ -1,0 +1,10 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/build/swig/_backscatter_decoder_swig_doc_tag.cpp
+

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.14">
+  <compound refid="classgr_1_1backscatter__decoder_1_1simpleDecoder" kind="class"><name>gr::backscatter_decoder::simpleDecoder</name>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder_1afebea19c13ce3fab6c1fae12590546fe" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder_1ac4c1caba67fe2bf93afb0e0aa59bd857" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl" kind="class"><name>gr::backscatter_decoder::simpleDecoder_impl</name>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1af47ae488af5d40157b6922ba9fc6d4c4" kind="function"><name>calcCRC</name></member>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1aef2eef81abe3aa99ee8441a4037d65d0" kind="function"><name>simpleDecoder_impl</name></member>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a2ae3e0673e331a558c3eae5e39ff7a36" kind="function"><name>~simpleDecoder_impl</name></member>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a16345a4c83b43ece308c9d336628efeb" kind="function"><name>forecast</name></member>
+    <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a551bef8d038a885db97d7af126a68901" kind="function"><name>general_work</name></member>
+  </compound>
+  <compound refid="namespacegr" kind="namespace"><name>gr</name>
+  </compound>
+  <compound refid="namespacegr_1_1backscatter__decoder" kind="namespace"><name>gr::backscatter_decoder</name>
+  </compound>
+  <compound refid="namespacestd" kind="namespace"><name>std</name>
+  </compound>
+  <compound refid="api_8h" kind="file"><name>api.h</name>
+    <member refid="api_8h_1ab7bdd6c8cfbf30698efb126f38726c28" kind="define"><name>BACKSCATTER_DECODER_API</name></member>
+  </compound>
+  <compound refid="group__defs_8dox" kind="file"><name>group_defs.dox</name>
+  </compound>
+  <compound refid="main__page_8dox" kind="file"><name>main_page.dox</name>
+  </compound>
+  <compound refid="simpleDecoder_8h" kind="file"><name>simpleDecoder.h</name>
+  </compound>
+  <compound refid="simpleDecoder__impl_8h" kind="file"><name>simpleDecoder_impl.h</name>
+  </compound>
+  <compound refid="group__block" kind="group"><name>block</name>
+  </compound>
+  <compound refid="dir_5196ab03d176df81b72f674ae3b0f5cf" kind="dir"><name>backscatter_decoder</name>
+  </compound>
+  <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>include</name>
+  </compound>
+  <compound refid="dir_97aefd0d527b934f1d99a682da8fe6a9" kind="dir"><name>lib</name>
+  </compound>
+  <compound refid="indexpage" kind="page"><name>index</name>
+  </compound>
+</doxygenindex>

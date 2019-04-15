@@ -1,0 +1,11 @@
+<block>
+  <name>Simpledecoder</name>
+  <key>backscatter_decoder_simpleDecoder</key>
+  <category>[BACKSCATTER_DECODER]</category>
+  <import>import backscatter_decoder</import>
+  <make>backscatter_decoder.simpleDecoder()</make>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+</block>

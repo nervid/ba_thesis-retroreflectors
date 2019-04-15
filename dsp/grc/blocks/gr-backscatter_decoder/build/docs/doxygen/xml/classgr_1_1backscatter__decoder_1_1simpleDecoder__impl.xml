@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl" kind="class" language="C++" prot="public">
+    <compoundname>gr::backscatter_decoder::simpleDecoder_impl</compoundname>
+    <basecompoundref refid="classgr_1_1backscatter__decoder_1_1simpleDecoder" prot="public" virt="non-virtual">gr::backscatter_decoder::simpleDecoder</basecompoundref>
+    <includes refid="simpleDecoder__impl_8h" local="no">simpleDecoder_impl.h</includes>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1af47ae488af5d40157b6922ba9fc6d4c4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>char</type>
+        <definition>char gr::backscatter_decoder::simpleDecoder_impl::calcCRC</definition>
+        <argsstring>(char *data, int length)</argsstring>
+        <name>calcCRC</name>
+        <param>
+          <type>char *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/simpleDecoder_impl.h" line="33" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1aef2eef81abe3aa99ee8441a4037d65d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>gr::backscatter_decoder::simpleDecoder_impl::simpleDecoder_impl</definition>
+        <argsstring>()</argsstring>
+        <name>simpleDecoder_impl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/simpleDecoder_impl.h" line="36" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a2ae3e0673e331a558c3eae5e39ff7a36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>gr::backscatter_decoder::simpleDecoder_impl::~simpleDecoder_impl</definition>
+        <argsstring>()</argsstring>
+        <name>~simpleDecoder_impl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/simpleDecoder_impl.h" line="37" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a16345a4c83b43ece308c9d336628efeb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void gr::backscatter_decoder::simpleDecoder_impl::forecast</definition>
+        <argsstring>(int noutput_items, gr_vector_int &amp;ninput_items_required)</argsstring>
+        <name>forecast</name>
+        <param>
+          <type>int</type>
+          <declname>noutput_items</declname>
+        </param>
+        <param>
+          <type>gr_vector_int &amp;</type>
+          <declname>ninput_items_required</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/simpleDecoder_impl.h" line="40" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a551bef8d038a885db97d7af126a68901" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int gr::backscatter_decoder::simpleDecoder_impl::general_work</definition>
+        <argsstring>(int noutput_items, gr_vector_int &amp;ninput_items, gr_vector_const_void_star &amp;input_items, gr_vector_void_star &amp;output_items)</argsstring>
+        <name>general_work</name>
+        <param>
+          <type>int</type>
+          <declname>noutput_items</declname>
+        </param>
+        <param>
+          <type>gr_vector_int &amp;</type>
+          <declname>ninput_items</declname>
+        </param>
+        <param>
+          <type>gr_vector_const_void_star &amp;</type>
+          <declname>input_items</declname>
+        </param>
+        <param>
+          <type>gr_vector_void_star &amp;</type>
+          <declname>output_items</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/simpleDecoder_impl.h" line="42" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="6">
+        <label>gr::backscatter_decoder::simpleDecoder</label>
+        <link refid="classgr_1_1backscatter__decoder_1_1simpleDecoder"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>gr::backscatter_decoder::simpleDecoder_impl</label>
+        <link refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>gr::block</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="9">
+        <label>gr::backscatter_decoder::simpleDecoder</label>
+        <link refid="classgr_1_1backscatter__decoder_1_1simpleDecoder"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>gr::backscatter_decoder::simpleDecoder_impl</label>
+        <link refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>gr::block</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/simpleDecoder_impl.h" line="30" column="1" bodyfile="/home/free_hat/git/retroreflectors/dsp/grc/blocks/gr-backscatter_decoder/lib/simpleDecoder_impl.h" bodystart="29" bodyend="46"/>
+    <listofallmembers>
+      <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1af47ae488af5d40157b6922ba9fc6d4c4" prot="private" virt="non-virtual"><scope>gr::backscatter_decoder::simpleDecoder_impl</scope><name>calcCRC</name></member>
+      <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a16345a4c83b43ece308c9d336628efeb" prot="public" virt="non-virtual"><scope>gr::backscatter_decoder::simpleDecoder_impl</scope><name>forecast</name></member>
+      <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a551bef8d038a885db97d7af126a68901" prot="public" virt="non-virtual"><scope>gr::backscatter_decoder::simpleDecoder_impl</scope><name>general_work</name></member>
+      <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder_1ac4c1caba67fe2bf93afb0e0aa59bd857" prot="public" virt="non-virtual"><scope>gr::backscatter_decoder::simpleDecoder_impl</scope><name>make</name></member>
+      <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1aef2eef81abe3aa99ee8441a4037d65d0" prot="public" virt="non-virtual"><scope>gr::backscatter_decoder::simpleDecoder_impl</scope><name>simpleDecoder_impl</name></member>
+      <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder_1afebea19c13ce3fab6c1fae12590546fe" prot="public" virt="non-virtual"><scope>gr::backscatter_decoder::simpleDecoder_impl</scope><name>sptr</name></member>
+      <member refid="classgr_1_1backscatter__decoder_1_1simpleDecoder__impl_1a2ae3e0673e331a558c3eae5e39ff7a36" prot="public" virt="non-virtual"><scope>gr::backscatter_decoder::simpleDecoder_impl</scope><name>~simpleDecoder_impl</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

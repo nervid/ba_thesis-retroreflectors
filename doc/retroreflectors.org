@@ -1,0 +1,1707 @@
+
+
+
+#+TITLE: RF Retroreflectors: The Use of Backscatter in Short Range Communication
+#+AUTHOR: David Haberleitner
+#+OPTIONS: toc:nil ':t ^:{} title:nil
+
+#+LaTeX_CLASS: book-noparts
+#+LaTeX_CLASS_OPTIONS: [12pt,a4paper,oneside] 
+#+LATEX_HEADER: \usepackage{fullpage}
+
+
+#+LATEX_HEADER: \usepackage{fancyhdr}
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \usepackage{bytefield}
+#+LATEX_HEADER: \usepackage[margin=3.5cm,headheight=17pt,includehead,includefoot,heightrounded]{geometry}
+
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usepackage{pgfplots}
+#+LATEX_HEADER: \usetikzlibrary{arrows.meta}
+#+LATEX_HEADER: \usetikzlibrary{automata, positioning, arrows}
+
+#+LATEX_HEADER: \usepackage{caption}
+#+LATEX_HEADER: \usepackage{subcaption}
+
+#+LATEX_HEADER: \usepackage{circuitikz}
+#+LATEX_HEADER: \usepackage{tikz-timing}
+# #+LATEX_HEADER: \usepackage{arrows}
+
+
+# #+LATEX_HEADER: \usepackage{automata}
+#+LATEX_HEADER: \usepackage{pgf}
+
+#+LATEX_HEADER: \usepackage[german, english]{babel} 
+
+#+LATEX_HEADER: \definecolor{lightgreen}{rgb}{0.56, 0.93, 0.56}
+#+LATEX_HEADER: \definecolor{lightred}{rgb}{0.93, 0.56, 0.56}
+
+#+LATEX_HEADER: \pgfplotsset{width=7cm,compat=1.8}
+#+LATEX_HEADER: \pgfmathdeclarefunction{gauss}{2}{%
+#+LATEX_HEADER:  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+#+LATEX_HEADER: }
+
+
+#+LATEX_HEADER: \newcommand{\colorbitboxes}[3]{%
+#+LATEX_HEADER:   \sbox0{\bitboxes{#2}{#3}}%
+#+LATEX_HEADER:   \makebox[0pt][l]{\textcolor{#1}{\rule[-\dp0]{\wd0}{\ht0}}}%
+#+LATEX_HEADER:   \bitboxes{#2}{#3}%
+#+LATEX_HEADER: }
+
+
+#+LATEX_HEADER: \fancyfoot{}
+#+LATEX_HEADER: \fancyhead[R]{\thepage}
+#+LATEX_HEADER: \fancyhead[L]{\itshape{\leftmark}}
+#+LATEX_HEADER: \renewcommand{\headrulewidth}{0pt}
+#+LATEX_HEADER: \headsep=0.5cm
+
+
+
+#+LATEX_HEADER: \pagestyle{fancy}
+
+
+#+BEGIN_EXPORT latex
+\frontmatter
+\thispagestyle{empty}
+\rule{0mm}{1mm}
+\vspace*{0mm}
+\begin{center}%
+\sffamily %\normalfont
+\setlength{\unitlength}{1cm}
+\parbox[c][5cm][c]{12cm}{%
+	\centering\LARGE\bfseries%
+	\setlength{\baselineskip}{25pt}%
+	{RF Retroreflectors} \\
+	\large{The Use of Backscatter in Short Range Communication}%
+}
+\vskip 15mm%
+{\large {David Haberleitner}}%{\large\scshape\@author}%
+\vskip 15mm%
+%	\makelogo%
+%{\vspace*{30mm}}%
+{\includegraphics[height=30mm]{img/logo.pdf}}%
+\vskip 15mm%
+{\Large\uppercase{Bachelorarbeit}}%
+\vskip 4mm%
+{\large Nr.~1520306051-A}
+	\vskip 4mm%
+{\large eingereicht am} \vskip 1mm {Fachhochschul-Bachelorstudiengang}%
+\vskip 4mm%
+{\large Hardware-Software-Design}%
+\vskip 4mm%
+{\large in Hagenberg}%
+\vskip 16mm%
+{\large im Juni 2018}%
+\end{center}%
+\vfil%
+
+
+\newpage
+\setcounter{page}{2}
+\thispagestyle{plain}
+\rule{0mm}{1mm}
+\vspace*{75mm}
+\begin{center}
+%\textsf{\copyright\ Copyright\ 2018\ David Haberleitner}
+Advisor:\\
+\noindent
+\Large\sf{FH-Prof. Dr.-Ing. habil. Hans Georg Brachtendorf}
+\end{center}
+%\vspace{8mm}
+
+
+%\sbox{
+%\noindent
+%This work is published under the conditions of the 
+%\textsf{Creative Commons License} 
+%\emph{Attribution-NonCommercial-NoDerivatives 4.0 International} 
+%(CC BY-NC-ND 4.0)---see
+%\url{https://creativecommons.org/licenses/by-nc-nd/4.0/}.
+%}
+#+END_EXPORT
+
+
+* Declaration
+#+BEGIN_EXPORT latex
+
+% statement of originality
+\thispagestyle{plain} % no header
+\noindent
+I hereby declare and confirm that this thesis is entirely the result of my own original
+work. Where other sources of information have been used, they have been indicated
+as such and properly acknowledged. I further declare that this or similar work has not
+been submitted for credit elsewhere.
+
+\par
+  \bigskip\noindent Hagenberg, June 18, 2018 \par
+  \vspace*{20mm}
+  \noindent
+David Haberleitner
+
+\pagebreak
+\tableofcontents
+
+#+END_EXPORT
+
+
+
+
+* Abstract
+Today's /Internet of Things/ (IoT) calls for technologies that make short-range communication more economical and energy efficient.
+Sensors for the IoT are primarily implemented as active devices that transmit data in one of the /industrial, scientific and medical/ (ISM) frequency bands. 
+To implement an active transmitters many components like oscillators and amplifiers are needed and therefore cost and energy requirements increase.  \\
+In this bachelor thesis a different approach will be implemented and evaluated. It presents sensors that do not transmit any power on their 
+own, but use modulated reflections to convey data back to a base station. This concept makes sensors exceptionally
+power-efficient and offloads nearly all radio frequency (RF) circuits to the base station, decreasing the cost of the sensor. \\
+Furthermore this thesis examines important concepts and implementation details for all necessary parts of such a system
+using a software-defined-radio (SDR) as part of the base station. \\
+
+# move to summary
+# The resulting prototypes were found to be working well and the concepts presented worked out 
+# to improve stability and performance of the communication systems. 
+
+* Kurzfassung
+\begin{otherlanguage}{german}
+Das heutige \textit{Internet of Things} (IoT) verlangt nach neuen Technologien um Kommunikation über geringe Reichweiten günstiger
+und effizienter durchzuführen. \\
+Sensoren die im IoT Anwendung finden, übertragen die Daten meist als aktive Sender in einem \textit{Industrial, Scientific and Medical} (ISM) Frequenzband.
+Dazu werden Komponenten wie Oszillatoren oder Verstärker benötigt, welche Preis und Energieverbrauch erhöhen. \\ 
+In dieser Bachelorarbeit wird ein anderes Konzept erarbeitet und anhand von Prototypen getestet. Diese Sensoren strahlen 
+selbst keine Energie ab sondern modulieren ihre Reflexionen um Daten zurück zur Basisstation zu senden. Dadurch 
+benötigt der Sensor nur eine sehr geringe Menge an Energie. Die Kosten für solche Sensoren sinken ebenfalls, da 
+das meiste an Hochfrequenzschaltungen nur noch in der Basisstation benötigt wird. \\
+Die Arbeit präsentiert Konzepte zur Implementierung eines solchen Systems und testet diese mithilfe eines 
+Software Defined Radios (SDR) als Teil der Basisstation auch in der Praxis. \\
+
+\end{otherlanguage}
+#+BEGIN_EXPORT latex
+\mainmatter
+#+END_EXPORT
+* Introduction
+** Motivation and Basics
+There is an increasing demand for Low Range Communication systems with very low power consumption. The Internet 
+of Things (IoT) also calls for very low cost sensors. \\
+These sensors or nodes only need to transmit data in most cases. Think of a temperature sensor where
+reception is often not needed. 
+The concept of a passive approach using only backscatter seems to fit well in this scenario. \\
+
+The investigated concept is based around the fact that antennas reflect RF power in a different way depending on their impedance.
+This reflection can be measured by the base station and the transmitted data can be extracted. \\
+The lack of any active power supply in the transmit path also makes this technology particularly interesting in the scope
+of surveillance. \\
+
+This concept is often referred to as /RF retroreflectors/ particularly in the context of surveillance. Michael 
+Ossmann held a talk cite:Ossman:Retroreflectors about this topic which also inspired me to write this term paper. The term retroreflectors itself
+is a bit misleading as the sensors will scatter power into all directions and not only the direction they are
+being illuminated from.
+# cite video
+# @unpublished{key,
+# title= {talk title},
+# author = {author names},
+# year = {year},
+# note= {conference name},
+# URL= {url link to talk abstract if any},
+# }
+
+Of course this technology exhibits many challenges including the tiny amounts of power that are reflected back to the base station.
+Figure ref:fig:schem_overview provides a schematic overview of such a backscatter communication system. 
+The base station will be based around a Software Defined Radio (SDR) and an antenna pair. The SDR will illuminate the sensor with a 
+sine wave in the desired frequency band and it will also receive and decode the data sent by the sensor. More on the principles of
+operation can be found in Chapter [[sec:princ]]. 
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{circuitikz}[scale=0.8, transform shape]
+\draw (0,0) rectangle (2,2) node[pos=.5] {SDR};
+
+\draw (3.5,2) node [txantenna,xscale=1](anttx){};
+\draw (3.5,-1) node [rxantenna,xscale=1](antrx){};
+\draw (10,0.75) node [ground](grou){};
+
+
+
+\draw (2,1.5) -- (3,1.5) -- (3,2) -- (anttx) node[above=0.5cm,anchor=north,align=center] {TX};
+\draw (2,0.5) -- (3,0.5) -- (3,-1) -- (antrx) node[above=0.5cm,anchor=north,align=center] {RX};
+
+
+\draw (10,1.5) node [nigfete,xscale=-1](t1){};
+\draw (t1.D) -- ++(-0.5,0) -- ++(0,2);
+\draw (t1.S) -- ++(-0.5,0) -- ++(0,-2);
+\draw (t1.G) -- ++(1,0);
+\draw ([xshift=1cm,yshift=-1cm]t1.G) rectangle ++(2,2) node[pos=.5,align=center] {Digital\\output};
+
+\draw ([xshift=-0.9cm]t1.B) node[rotate=90,anchor=center] {dipole antenna};
+
+\draw [dashed] (-0.5,-2) rectangle ++(7.5,7) node[align=center,xshift=-3.75cm,yshift=0.25cm] {Base station};
+\draw [dashed] (8,-2) rectangle ++(6.5,7) node[align=center,xshift=-3.25cm,yshift=0.25cm] {Sensor/Wiretap};
+
+\fill (t1.S) circle [radius=1.5pt];
+\end{circuitikz}
+\caption{Schematic overview}
+\label{fig:schem_overview}
+\end{figure}
+#+END_EXPORT
+
+** Methodology
+The term paper will present all the basic concepts utilised and also guide the reader through the process of developing such a system.
+The system will be based around a Software Defined Radio from Analog Devices called ADALM-PLUTO. A small section will explain 
+the basics of Software Defined Radios and how they can be used efficiently with free software. \\
+The main part of the development will be done in the *GNU Radio* framework.
+
+Over the course of this study several prototypes will be developed, to show real life performance of the concepts being implemented. 
+
+** Prototypes
+Prototypes and development boards will be built in an iterative process to mitigate problems found. This approach should yield 
+a well performing proof of concept. \\
+Using these prototypes several limiting factors such as bandwidth, range and interference can be explored in real life scenarios.
+The prototypes should be based around accessible parts so everyone interested can build them using the released
+schematics and printed circuit board (PCB) files and experiment with backscatter communication. 
+
+** Intended Results
+In the end, the thesis shall provide a good overview of what is possible using off-the-shelf components and low-cost 
+Software Defined Radios. All results in the form of programs, schematics and board layouts will be released under 
+the GPL-V2 license cite:gplv2. 
+The study shall also provide a discussion of the tradeoffs and limiting factors of such communication systems. \\
+Also as part of the results a chapter shall provide ideas on how to further improve performance of backscatter
+communication systems.  
+
+
+** Software Defined Radios
+This section provides a short introduction to Software Defined Radios and particularly to the one used 
+in this thesis. \\
+SDRs are a concept for rapid prototyping of communication systems. But they can
+also be used in systems with transmission standards that change over time, e.g. mobile communications base stations. 
+They work by downconverting an RF Signal to a complex (IQ) baseband signal, filtering and converting this signal to 
+the digital domain. From there almost every type of modulation/demodulation can be performed. The SDR often provides 
+some kind of digital decimators/interpolators and filtering in hardware to reduce load on the host system. 
+In Figure ref:fig:sdr_schema_rx the conceptional layout of the receiving part of an SDR can be seen. 
+In Figure ref:fig:sdr_schema_tx the transmitting part is illustrated.
+
+#+BEGIN_EXPORT latex
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.9, transform shape]
+\draw (0,0) node [rxantenna,xscale=-1](antrx){} node[above=0.75cm,anchor=north,align=center] {RX};
+\draw (4,2) node [mixer,xscale=1](m1){};
+\draw (4,-2) node [mixer,xscale=1](m2){};
+
+%\draw (6,0) node [oscillator,align=center] (lo) {}
+%node[right=0.5cm,anchor=center,align=center] {LO};
+
+\draw (antrx) to [amp] ++(2,0)
+to ++(0,0) node[circ]{}
+to ++(0,2)
+to (m1.west) ++(2,0){}
+(m1.east) to ++(0.5,0) 
+to [lowpass] ++(2,0){}
+to [adc] ++(2,0){}
+to [twoport,align=center,t=FIR] ++(2,0){}
+to [short,-o,l={I}] ++(1,0);
+
+\draw (2,0)
+to ++(0,-2)
+to (m2.west) ++(2,0){}
+(m2.east) to ++(0.5,0) 
+to [lowpass] ++(2,0){}
+to [adc] ++(2,0){}
+to [twoport,align=center,t=FIR] ++(2,0){}
+to [short,-o,l={Q}] ++(1,0);
+
+\draw (m1.2)
+to ++(0,-0.5) node[draw,anchor=north,fill=white]{+90°}
+to ++(0,-1) node[circ]{}
+to ++(1,0) node[oscillator,anchor=west]{};
+
+\draw (m2.4)
+to ++(0,1.5){};
+
+\end{tikzpicture}
+\caption{SDR RX block diagram}
+\label{fig:sdr_schema_rx}
+\end{figure}
+#+END_EXPORT
+
+#+BEGIN_EXPORT latex
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.9, transform shape]
+\draw (10,0) node [txantenna,xscale=1](anttx){} node[above=0.75cm,anchor=north,align=center] {TX};
+\draw (7,2) node [mixer,xscale=1](m1){};
+\draw (7,-2) node [mixer,xscale=1](m2){};
+\draw (9,0) node [adder,xscale=1](add1){};
+
+
+%\draw (6,0) node [oscillator,align=center] (lo) {}
+%node[right=0.5cm,anchor=center,align=center] {LO};
+
+\draw (0,2) to[short,-o,xscale=-1] ++(0,0) node[above=0.75cm,anchor=north,align=center] {I}
+to [twoport,t=FIR] ++(2,0){}
+to [dac] ++(2,0){}
+to [lowpass] ++(2,0){}
+to (m1.west){};
+
+\draw (0,-2) to[short,-o,xscale=-1] ++(0,0) node[above=0.75cm,anchor=north,align=center] {Q}
+to [twoport,t=FIR] ++(2,0){}
+to [dac] ++(2,0){}
+to [lowpass] ++(2,0){}
+to (m2.west){};
+
+\draw (m1.east) 
+to ++(1.5,0)
+to (add1.north){};
+
+\draw (m2.east) 
+to ++(1.5,0)
+to (add1.south){};
+
+\draw (add1.east) 
+to (anttx){};
+
+\draw (m1.2)
+to ++(0,-0.5) node[draw,anchor=north,fill=white]{+90°}
+to ++(0,-1) node[circ]{}
+to ++(-1,0) node[oscillator,anchor=east]{};
+
+\draw (m2.4)
+to ++(0,1.5){};
+
+\end{tikzpicture}
+\caption{SDR TX block diagram}
+\label{fig:sdr_schema_tx}
+\end{figure}
+#+END_EXPORT
+
+SDRs mostly use IQ samples, as these are much easier to process than amplitude and phase values. See Figure ref:fig:iq_phase_amp for an illustration
+of the two different descriptions of complex signals. 
+
+#+BEGIN_EXPORT latex
+\begin{figure*}[ht]
+\centering
+\begin{tikzpicture}[]
+\draw [->,-Latex]  (0,0) to (4,0) node[xshift=-2cm,below] {I (Real)};
+\draw [->,-Latex]  (0,0) to (0,4) node[yshift=-2cm,left,align=center] {Q \\(Imaginary)};
+\draw [->,-Latex]  (0,0) to (4,4) node[xshift=-2cm,yshift=-2cm,below,rotate=45,above] {A (Amplitude)}; 
+\draw [dashed]  (0,4) to (4,4);
+\draw [dashed]  (4,0) to (4,4);
+
+\filldraw[fill=green!20,draw=black] (0,0) -- (1.5cm,0pt) arc(0:45:1.5cm);
+  \draw (45/2:1cm) node[] {$\varphi$};
+
+%\pic ["$\alpha$", draw=orange, <->, angle eccentricity=1.2, angle radius=1cm] {angle = coordinate (4,0) -- coordinate (0,0) -- coordinate (4,4)};
+\end{tikzpicture}
+\caption{IQ vs Amplitude/Angle representation \cite{National:IQData}}
+\label{fig:iq_phase_amp}
+\end{figure*}
+#+END_EXPORT 
+
+Conversion from IQ data to amplitude and phase values can be made using cite:National:IQData.
+
+#+BEGIN_EXPORT latex 
+\begin{equation}
+\label{equ:iq}
+x(t) = A \cdot \cos(2 \pi \cdot f_c \cdot t + \varphi) = I \cdot \cos(2 \pi \cdot f_c \cdot t) + Q \cdot \sin(2 \pi \cdot f_c \cdot t)
+\end{equation}
+
+% cite http://www.ni.com/tutorial/4805/en/
+
+#+END_EXPORT 
+
+** ADALM-PLUTO
+As stated before the study will be based on the Software-Defined-Radio 
+ADALM-PLUTO from Analog Devices with the following specifications cite:AnalogDevices:plutospecs:
+- 1 RX channel.
+- 1 TX channel.
+- up to 20MHz baseband bandwidth.
+- Mixer LO (both RX and TX) range 300MHz-3.8GHz.
+- Analog Devices AD9363 front end.
+- Xilinx Zynq 7010 System on Chip (SoC) with Field Programmable Gate Array (FPGA).
+- USB 2.0 interface useable either as device to stream IQ data to a PC or as a host to use USB devices such as Wifi/Ethernet adapters or mass storage.
+The SDR can be used in two configurations:
+1) Streaming IQ data to a PC via the USB interface.
+2) Processing the IQ data directly on the FPGA or embedded processor on the board. The demodulated/decoded data can then be transmitted via USB/Ethernet/Wifi.
+ 
+In this thesis only the first configuration will be used, as it is much easier to change parameters 
+and algorithms in software running on the PC instead of recompiling applications or even FPGA images.
+
+The Zynq SoC runs a full Linux operating system generated by buildroot[fn::Buildroot for building embedded Linux systems: https://buildroot.org/]. 
+Therefore GNU Radio could also be run on the board itself. It would be feasible to run the whole application on the ADALM-PLUTO 
+but for testing and development a separated PC running GNU Radio was used. \\
+
+To communicate from the PC to the SDR several drivers and modules are necessary:
+1) *LibIIO*: Library for interfacing Industrial Input/Output (IIO) devices in general.
+2) *LibAD9361-IIO*: Library to communicate with the main chip of the SDR. Uses LibIIO.
+3) *gr-iio*: GNURadio source and sink blocks for the ADALM_PLUTO and other IIO devices.
+
+Figure ref:fig:pluto_sw_stack shows the software dependencies when using the SDR with an external PC for signal processing.
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.8, transform shape]
+\node at (-4,4) [draw,rectangle,minimum width=3cm,minimum height=1cm](app) {Application} ;
+\node at (0,3) [draw,rectangle,minimum width=3cm,minimum height=1cm](core) {Core Blocks} ;
+\node at (-4,2) [draw,rectangle,minimum width=3cm,minimum height=3cm](gr) {GNU Radio} ;
+\node at (0,1) [draw,rectangle,minimum width=3cm,minimum height=1cm](gr-iio) {gr-iio} ;
+\node at (0,0) [draw,rectangle,minimum width=3cm,minimum height=1cm,align=center](lib-iio) {Lib-IIO \\ LibAD9361} ;
+
+\node at (8,4) [draw,rectangle,minimum width=7cm,minimum height=1cm](linux) {Linux OS} ;
+\node at (8,3) [draw,rectangle,minimum width=7cm,minimum height=1cm](iio_driv) {IIO Drivers} ;
+\node at (8,2) [draw,rectangle,minimum width=7cm,minimum height=1cm](fpga) {FPGA Modules} ;
+\node at (6,0) [draw,rectangle,minimum width=3cm,minimum height=1cm](ad_conf) {AD9361 Config} ;
+\node at (10,0) [draw,rectangle,minimum width=3cm,minimum height=1cm](ad_data) {AD9361 Data} ;
+
+
+\draw [double,<->] (core.west) -- ([yshift=1cm]gr.east);
+\draw [double,<->] (gr-iio.west) -- ([yshift=-1cm]gr.east);
+\draw [double,<->] ([xshift=-2cm]fpga.south) -- (ad_conf.north);
+\draw [double,<->] ([xshift=2cm]fpga.south) -- (ad_data.north);
+
+\draw [->] (lib-iio.south) to [out=-60,in=180] ([xshift=1.5cm,yshift=-1cm]lib-iio.south) 
+to [out=0,in=180] ([xshift=-3.5cm,yshift=1cm]linux.north) node[xshift=-2cm,above] {USB}
+to [out=0,in=120] (linux.north);
+
+\draw [dashed] (-6.25,-1.25) rectangle ++(8.5,6.5) node[align=center,xshift=-3.75cm,yshift=0.25cm] {PC};
+   
+\draw [dashed] (3.75,-1.25) rectangle ++(8.5,6.5) node[align=center,xshift=-3.75cm,yshift=0.25cm] {SDR};
+   
+\end{tikzpicture}
+\caption{Software Stack}
+\label{fig:pluto_sw_stack}
+\end{figure}
+#+END_EXPORT
+
+
+** GNU Radio
+Most of the signal processing will be done in the /GNU Radio/ framework as 
+it provides many premade blocks for different tasks such as the following: 
+- Filtering (Finite-Impulse-Response (FIR) and Infinite-Impulse-Response (IIR) filter architectures, filter taps can be calculated using Python libraries).
+- Frequency translation (either using multiply blocks or frequency translating filters).
+- Sources and Sinks for virtual and various physical devices including the ADALM-Pluto.
+- GUI-Elements to configure and also debug the developed system.
+
+*** GNU Radio Companion 
+GNU Radio itself is a framework that can be included in Python applications. To generate systems through a graphical 
+editor GNU Radio Companion (GRC) can be used. Systems can be built as so-called flowgraphs with each block representing a 
+specific function. A block can either source and/or sink data through the in/out ports displayed in GRC.
+The /GNU Radio/ framework supports different data types:
+- complex float :: two float values per sample representing the Inphase and Quadrature component of the complex signal (see Figure ref:fig:iq_phase_amp).
+- float :: float type for real values. Used for instance to output audio signals to audio devices.
+- byte :: type for digital data. This is the output of digital demodulation/decoding.
+
+
+* Fundamentials and Different Approaches
+<<sec:princ>>
+** Theory of Operation
+As stated before the communication will be limitited in one direction. The logical transmitter will 
+be the sensor or wiretap, from now on referred to only as sensor. The sensor will not
+actively transmit RF power as it only reflects the illumination signal. \\
+The node has to be illuminated with a carrier wave to be able to reflect any power. This will
+be done with the TX path of the SDR. 
+The carrier itself will be completely unmodulated and therefore contains no information. 
+For future approaches the carrier could be spread over a wider spectrum to utilise techniques like
+frequency hopping. \\
+The sensor will basically consist of a MOSFET and a dipole antenna. By controlling the
+gate of the transistor, the impedance between both poles of the dipole will change and therefore also the 
+amplitude and phase of reflected power will vary. \\
+The receiving part of the base station will be implemented with the RX path of the SDR and of course
+in software using the *GNU Radio* framework.
+High amounts of processing power may or may not be needed depending on whether 
+error correcting block codes will be used or not. \\
+
+As this approach resembles the principles of a Radio Detection and Ranging (RADAR) system, 
+the power at the receiving antenna of the base station is given by the RADAR equation cite:book:79246. 
+The received power $P_r$ is given by the transmit power $P_t$, antenna gain $G$, radar cross-section of the target $A_e$ and the 
+distance between target and transceiver $R$. The radar cross-section describes how much power is reflected in the direction 
+of the incoming wave.
+#+BEGIN_EXPORT latex
+\begin{equation}
+\label{equ:radar}
+P_r = \frac{P_t \cdot G \cdot A_e \cdot \sigma}{{4\pi}^2 \cdot R^4}
+\end{equation}
+#+END_EXPORT
+
+The radar equation illustrates a big challenge for RF retroreflectors as the received power is proportional to $\frac{1}{R^4}$. 
+Therefore high gain antennas and low range requirements are critical for this application. \\
+# Figure ref:fig:reflected_power shows the received power in relation to range at 2.4GHz. The RADAR cross section was 
+# assumed to be \( 0.15 \cdot \lambda^2 \). \\
+# TODO: explain assumptions, find x-section for dipole etc. \\
+
+#+BEGIN_SRC octave :exports none
+
+graphics_toolkit('gnuplot');
+
+pt = 1e-3;
+G = 10;
+Ae = 1;
+xsec = 0.15 * (3e8/2.4e9);
+R=[0.1:0.001:10];
+pr = (pt * G * Ae * xsec) ./ ((4/pi)^2 * R.^4);
+
+h = plot(R,10 * log10(pr), 'Linewidth', 4);
+xlabel('Range (m)', 'fontweight', 'bold', 'fontsize',16);
+ylabel('Power (dBm)', 'fontweight', 'bold', 'fontsize',16);
+
+set(gca, 'fontweight', 'bold', 'Linewidth', 4, 'fontsize',16);
+
+print('img/rangeRecvPower','-dpng');
+
+#+END_SRC
+
+#+RESULTS:
+
+
+#+BEGIN_EXPORT latex
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=0.7\textwidth]{img/rangeRecvPower.png}
+%\caption{Received Power versus Range}
+%\label{fig:reflected_power}
+%\end{figure}
+#+END_EXPORT
+
+** Passive Versus Active Approach
+<<sec:princ_act>>
+In the passive approach the gate of the transistor is directly connected to a wire of a 
+communications system like Universal Asynchronous Receiver Transmitter(UART) or Inter-Integrated Circuit (I2C).
+This approach fits well for wiretaps as it can be implemented using only two short wires for the dipole and a tiny transistor.
+But demodulation and decoding of the data is very hard because no additional data for clock training or frame synchronisation 
+can be added to or inserted into the bitstream.
+This approach needs no power supply as the transistor is operated directly from the communication signal.
+
+
+In the active approach the gate of the transistor will be modulated by a microcontroller. Therefore the processor 
+can insert information into the packets/frames to provide additional information, synchronisation or to implement
+error detection and even forward error correction.
+This approach needs a dedicated power supply for the microcontroller. But the required energy could also be harvested from the
+communication signal itself as modern microcontrollers have very low power requirements. The circuit could harvest 
+energy while the communication line is in the HIGH state and store energy for when the signal is LOW and no power can be harvested. \\
+Another possibility is to implement a modulation to bring the information signal spectrally 
+away from the carrier. This can be very benificial to suppress any crosstalk at the base station 
+as the carrier can be easily filtered out of the received signal. This method will be discussed and
+implemented in Chapter [[sec:shifting]].
+
+
+* Passive Approach
+** Electrical Realization
+Electrically the system can be implemented fairly easy, as no complicated RF circuitry like mixers or
+oscillators have to be built. These are either integrated in the SDR or inferred by the approach.
+The transistor/antenna combination can be represented as a multiplication of the illuminating carrier and the signal at the gate.
+  
+** Modulation
+The antenna can achieve two states which depend on the signal at the gate of the transistor:
+- 0V at gate: Transistor is switched off, $Z_{term} \rightarrow \infty\Omega$
+- VCC at gate: Transistor in linear region, $Z_{term} = 0\Omega$
+
+When the antenna is terminated with an impedance of $Z_{term} \rightarrow \infty$ the phase of the reflection equals
+the phase of the incoming wave cite:Bleany. \\
+If the terminating impedance is changed to $Z_{term} = 0\Omega$ the outgoing wave is the inverted incoming wave 
+\textrightarrow 180° phase shift. \\
+
+ 
+Of course this will not be achieved in real world scenarios as there are a number of effects which will influence the impedance
+of the termination additionally:
+- Transistor Drain-Source capacitance.
+- Transistor On resistance.
+- Capacitive and inductive effects of conductors used.
+
+This means that in reality the reflected signal is both modulated in amplitude and in phase. \\ 
+In Chapter [[sec:shifting]] another modulation will be used on top of this concept. 
+** Antennas
+The two main requirements for the antennas at the base station are:
+- Low crosstalk between each other and therefore low sidelobes for each antenna.
+- High gain at the main lobe.
+
+Waveguide antennas would exhibit these properties well and are therefore a good choice for this application. 
+But they are quite complicated to build and would be rather large at the frequencies used. \\
+Another antenna type with high gain is the /Biquad antenna/ cite:arguelles17_super. This is a kind of loop antenna at $\frac{\lambda}{4}$ with a reflecting
+ground plane behind the active element. The reflector is spaced $\frac{\lambda}{8}$ from the active element. \\
+
+The antennas were designed to be resonant at $2.45GHz$. This results in the following dimensions:
+- $a = 30.6mm$
+- $s = 15.3mm$
+
+The antenna was constructed using single-sided printed circuit board material (FR4) for the reflector. 
+Bare copper wire was used for the active elements. Connection is made using SMA 
+connectors. In an attempt to reduce crosstalk a small reflector was inserted between the antennas. The
+finished antenna combination can be seen in Figure ref:fig:base_antennas.
+
+#+BEGIN_EXPORT latex
+
+\begin{figure*}[ht!]
+\centering
+
+\begin{subfigure}[t]{\textwidth}
+\includegraphics[width=\textwidth]{img/antenna_front_cut.jpg}
+\caption{Front View}
+\end{subfigure}
+
+\begin{subfigure}[t]{\textwidth}
+\includegraphics[width=\textwidth]{img/antenna_top_cut.jpg}
+\caption{Top View}
+\end{subfigure}
+\caption{Biquad Antennas}
+\label{fig:base_antennas}
+\end{figure*}
+
+#+END_EXPORT 
+
+** Clock Recovery
+One of the challenges in implementing such a system is of course clock recovery and synchronisation,
+as the receiver has no knowledge over the current phase of the signal from the sensor. 
+Therefore methods for clock recovery have to be introduced. *GNU radio* provides several readymade
+blocks for clock recovery/synchronisation:
+- Costas loop
+- Mueller-Mueller clock recovery
+- Polyphase clock sync
+
+This term paper will focus on the Mueller-Muller algorithm for clock recovery. The algorithm calculates a timing 
+error based on the current and last input value. This error is then used to select the sample which should be at the center of the 
+received symbol cite:mueller76_timin_recov_digit_synch_data_receiv.
+ 
+# K. H., and M. S. Muller Mueller, "Timing Recovery in Digital Synchronous Data Receivers," IEEE Transactions on Communications, vol. COM-24, pp. 516-531, 1976.
+** Offset Tuning
+To minimise the influence of a DC offset at the ADCs on the RX side the concept of *Offset tuning* is introduced.
+The LO of the receiver is slightly offset from the LO of the transmitter. Therefore the signal of interest 
+will be slightly offset from DC in the baseband. This helps with surpressing the DC offset from the RX mixer and ADC. \\
+To convert the signal of interest back to DC a Frequency Translating FIR Filter cite:Frerking:DSP is used. \\
+Note that this will only suppress DC offset from the RX mixer/ADC and *not* any other parts coming from physical crosstalk 
+or unwanted reflections. This concept is illustrated in Figure ref:fig:offset_tuning.
+
+#+BEGIN_EXPORT latex
+
+\begin{figure}[ht!]
+\centering
+
+\begin{subfigure}[t]{0.4\textwidth}
+\centering
+  \begin{tikzpicture}
+  \begin{axis}[every axis plot post/.append style={
+    mark=none,domain=-3:3,samples=50,smooth},
+      % All plots: from -2:2, 50 samples, smooth, no marks
+    axis x line*=bottom, % no box around the plot, only x and y axis
+    axis y line=center, % the * suppresses the arrow tips
+    enlargelimits=upper, % extend the axes a bit to the right and top
+    %title=, title style={align=center,font=\bfseries},
+    xmax=3,xmin=-3,
+    ticks=none]
+
+    \addplot {gauss(0,0.2)};
+    \draw[thick,red,rounded corners=1mm] (axis cs: -1,0) -- (axis cs: -1,1.25) -- (axis cs: 0,1) -- (axis cs: 1,1.25) -- (axis cs: 1,0);
+    \draw[blue] (axis cs: 0,2) node[right] {DC};
+    \draw[red] (axis cs: 1,1.25) node[right] {Signal};
+  \end{axis}
+  \end{tikzpicture}
+  \caption{Directly tuning to the signal}
+\end{subfigure}
+~
+\begin{subfigure}[t]{0.4\textwidth}
+\centering
+\begin{tikzpicture}
+
+\begin{axis}[every axis plot post/.append style={
+  mark=none,domain=-3:3,samples=50,smooth},
+    % All plots: from -2:2, 50 samples, smooth, no marks
+  axis x line*=bottom, % no box around the plot, only x and y axis
+  axis y line=center, % the * suppresses the arrow tips
+  enlargelimits=upper, % extend the axes a bit to the right and top
+  %title=Offset tuning, title style={align=center,font=\bfseries},
+  xmax=3,xmin=-3,
+  ticks=none]
+  
+  \addplot {gauss(0,0.2)};
+  \draw[thick,red,rounded corners=1mm] (axis cs: -1+2,0) -- (axis cs: -1+2,1.25) -- (axis cs: 0+2,1) -- (axis cs: 1+2,1.25) -- (axis cs: 1+2,0);
+  \draw[blue] (axis cs: 0,2) node[right] {DC};
+  \draw[red] (axis cs: 1+2,1.25) node[above] {Signal};
+\end{axis}
+\end{tikzpicture}
+\caption{Offset tuning}
+\end{subfigure}
+
+\par\bigskip
+
+\begin{subfigure}[t]{0.4\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[every axis plot post/.append style={
+  mark=none,domain=-3.5:3.5,samples=50,smooth},
+    % All plots: from -2:2, 50 samples, smooth, no marks
+  axis x line*=bottom, % no box around the plot, only x and y axis
+  axis y line=center, % the * suppresses the arrow tips
+  enlargelimits=upper, % extend the axes a bit to the right and top
+  %title=Filtering and \\ frequency translation, title style={align=center,font=\bfseries},
+  xmax=3,xmin=-3,
+  ticks=none]
+  
+  \addplot[dashed] {gauss(0,0.2)};
+  \draw[thick,red,rounded corners=1mm] (axis cs: -1+2,0) -- (axis cs: -1+2,1.25) -- (axis cs: 0+2,1) -- (axis cs: 1+2,1.25) -- (axis cs: 1+2,0);
+  \draw[thick,black,rounded corners=1mm] (axis cs: -1.25+2,0) -- (axis cs: -1.25+2,1.5) --  (axis cs: 1.25+2,1.5) -- (axis cs: 1.25+2,0);
+  %\draw[black] (axis cs: 0,2) node[right] {DC};
+  \draw[red] (axis cs: 2,1) node[below] {Signal};
+  \draw[black] (axis cs: 2,1.5) node[above,align=center] {Frequency \\ X-lating FIR};
+  
+  
+  \draw[-{Latex[width=2mm]}] (axis cs: 2,1.375) -- (axis cs: 0,1.375);
+\end{axis}
+
+\end{tikzpicture}
+\caption{Filtering and frequency translation}
+\end{subfigure}
+~
+\begin{subfigure}[t]{0.4\textwidth}
+\centering
+\begin{tikzpicture}
+
+\begin{axis}[every axis plot post/.append style={
+  mark=none,domain=-3.5:3.5,samples=50,smooth},
+    % All plots: from -2:2, 50 samples, smooth, no marks
+  axis x line*=bottom, % no box around the plot, only x and y axis
+  axis y line=center, % the * suppresses the arrow tips
+  enlargelimits=upper, % extend the axes a bit to the right and top
+  %title=Resulting Baseband signal, title style={align=center,font=\bfseries},
+  xmax=3,xmin=-3,
+  ticks=none]
+  
+  \addplot[draw=none] {gauss(0,0.2)};
+  \draw[thick,red,rounded corners=1mm] (axis cs: -1,0) -- (axis cs: -1,1.25) -- (axis cs: 0,1) -- (axis cs: 1,1.25) -- (axis cs: 1,0);
+  \draw[red] (axis cs: 1,1.25) node[right] {Signal};
+\end{axis}
+\end{tikzpicture}
+\caption{Resulting baseband signal}
+\end{subfigure}
+\caption{Offset tuning}
+\label{fig:offset_tuning}
+\end{figure}
+
+#+END_EXPORT
+
+
+* Active Approach
+** Electrical Realization
+Instead of connecting the transistor/antenna combination directly to the signal of interest, a microcontroller
+is used to sample or generate data and bring it into a desired packet form. These packets are then transmitted using the 
+antenna/transistor circuit. \\
+Such microcontrollers are able to sample data from many different standard interfaces like the following examples:
+- Inter-Integrated Circuit (I2C) databus 
+- Serial Peripheral Interface (SPI)
+- Universal (Synchronous)/Asynchronous Receiver Transmitter (U(S)ART)
+- Controller Area Network (CAN)
+- Analog voltages via the integrated Analogue to Digital Converter (ADC)
+
+Of course there are many more data sources such as environmental sensors like temperature or humidity sensors
+but they mostly use a digital or analogue interface mentioned above. \\
+
+In this term paper data is not sampled from a real world interface, but stored in the program ROM for testing purpose. \\
+
+
+** Frame Structure and Synchronisation
+<<sec:active:frame_structure>>
+As stated in Chapter [[sec:princ_act]] data will be transmitted in the form of frames. These frames include data
+for the following three purposes:
+- Synchronisation
+- Payload data
+- Error detection
+
+Figure ref:fig:frame_struct_active shows the proposed structure for a short frame with a length of 9 bytes.
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{bytefield}{8}
+	\bitheader{0,7} \\
+	%\bitbox{4}{Tag} & \bitbox{12}{Mask} \\
+	\wordbox{3}{Preamble, 3 Bytes} \\
+	\wordbox{1}{ID, 1 Byte}  \\
+	\wordbox{4}{Data, 4 Bytes} \\
+	\wordbox{1}{CRC8, 1 Byte} \\
+
+\end{bytefield}
+\caption{Frame structure}
+\label{fig:frame_struct_active}
+\end{figure}
+#+END_EXPORT
+
+*** Preamble
+The preamble consists of a training sequence for clock synchronisation
+and an 11 bit Barker sequence for frame synchronisation.
+The Barker code was chosen because of the excellent autocorrelation property.
+This makes it a good choice for frame synchronisation.
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{bytefield}{24}
+    \colorbitboxes{lightred}{1}{1010101010101} &
+	\colorbitboxes{lightgreen}{1}{11100010010}
+\end{bytefield}
+\caption{Preamble bit values, clock training (red), Barker Code (green)}
+\end{figure}
+#+END_EXPORT
+
+Another thing to consider is the length of the chosen synchronisation code. 
+The probability that a code with length $n$ is recognised in a random string of bits with the same length is:
+#+BEGIN_EXPORT latex
+\begin{equation}
+p = \frac{1}{2^n}
+\end{equation}
+#+END_EXPORT
+
+At an expected bit rate of $7812.5 bit/s$ and a 11 bit Barker Code the rate of falsely detecting a start of frame would be:
+#+BEGIN_EXPORT latex
+\begin{equation}
+{7812.5 bit/s} \cdot \frac{1}{2^{11}} = 3.81 {detections}/s
+\end{equation}
+#+END_EXPORT
+
+So a frame would be detected about every 260 milliseconds when receiving white noise. Therefore another concept has to be introduced to 
+validate the integrity of the data. See Chapter [[sec:crc8]] for more details.\\
+
+
+Figure ref:fig:autocorr_barker illustrates the frame synchronisation process.
+A random sequence of bits (with embedded 11 bit Barker Code) is convoluted with an offset version of the Barker Code itself. 
+The highest peak in the figure shows where the Barker Code is located in the bit sequence and therefore where a new frame would start. \\
+
+#+BEGIN_SRC octave :exports none
+graphics_toolkit('gnuplot');
+
+padding = 50;
+rand("seed", 4);
+
+barker = [1 1 1 -1 -1 -1 1 -1 -1 1 -1];
+
+stream = [round(rand(1,padding))*2-1 barker];
+stream = [stream round(rand(1,padding))*2-1];
+
+
+for i=1:(length(stream)-length(barker))
+  
+  % correlate here
+  output(i) = sum( barker(1:end) .* stream(i:i+length(barker)-1) );
+  
+end
+
+%plot(output(1:length(barker)+2*padding));
+
+h = plot(output(1:2*padding), 'Linewidth', 4);
+xlabel('Sample (1)', 'fontweight', 'bold', 'fontsize',16);
+ylabel('Amplitude (1)', 'fontweight', 'bold', 'fontsize',16);
+
+set(gca, 'fontweight', 'bold', 'Linewidth', 4, 'fontsize',16);
+
+
+
+print('img/corr_barker_random','-dpng');
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img/corr_barker_random.png}
+\caption{Correlation of a random signal (with embedded Barker Code) with the Code itself}
+\label{fig:autocorr_barker}
+\end{figure}
+#+END_EXPORT
+
+*** ID
+As the node will retransmit the frames multiple times to mitigate transmission errors, the protocol needs a mechanism 
+to detect when new frame, which was not transmitted before, is received. For this purpose an 8-bit value was chosen. 
+
+*** Data
+This field provides 4 Bytes of data that can be chosen arbitrarily by the user. Of course the size of this field could be increased
+but for testing purposes a short packet length was desired. With a fixed bit error rate a higher amount of 
+payload data would also result in a lower amount of successful transmitted frames. \\
+For small sensors a payload of 4 Bytes should be enough in most cases.
+
+*** CRC8
+<<sec:crc8>>
+As the system often produces bit errors because of false phase estimation or power fading, a method to detect affected frames
+has to be introduced. \\
+At first a simple checksum where the exclusive or (XOR) of all bytes is calculated was considered. But after some 
+experiments the checksum was found to not be very useful as even only two opposing errors at the same bit location lead to a 
+valid checksum for a non valid frame. \\
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\begin{eqnarray*}
+10101010 \oplus 10101010 &=& 00000000 \\
+\colorbox{lightred}{\makebox[0.1em]{\strut{0}}}0101010 \oplus \colorbox{lightred}{\makebox[0.1em]{\strut{0}}}0101010 &=& 00000000 
+\end{eqnarray*}
+\caption{XOR Checksum with two bit errors (red) at the same location within the bytes}
+\end{figure}
+#+END_EXPORT
+
+Therefore the more complicated approach using a Cyclic Redundancy Check (CRC) was introduced. 
+For the polynomial CRC-8-CCITT was chosen
+
+#+BEGIN_EXPORT latex
+\begin{equation}
+\label{eq:crc_poly}
+%\centering
+x^8 + x^2 + x + 1
+\end{equation}
+#+END_EXPORT
+
+The algorithm was implemented both at the logical transmitter (sensor) and at the logical receiver (SDR/GNU Radio). 
+In both cases the calculation is done without a CRC table because at the chosen data rates speed is not a concern
+and the microcontroller at the sensor has only a very limited amount of RAM. \\
+
+
+** Implementation of a Sensor
+<<sec:prototype_active>>
+To test the active approach a prototype was developed around an STM8 microcontroller. The schematic and the board layout were
+developed using the free software KiCad cite:KiCad. \\
+The board was developed with the intention to experiment with different settings (unpopulated footprints around the antenna circuit)
+and to have at least a rudimentary human interface using Light Emitting Diodes (LEDs) and a button.
+The gate of the transistor is connected to the MOSI pin of the SPI peripheral on the microcontroller so that arbitrary data can be
+sent.
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{tikzpicture} 
+\node[inner sep=0pt] (brd) at (0,0)
+    {\includegraphics[width=\textwidth]{img/proto1_free.jpg}};
+
+\node[] (ant-) at (2.5,1.5){};
+\node[] (ant+) at (-2.5,1.5){};
+\node[] (t) at (0,1.5){};
+\node[] (btn) at (2,-0.5){};
+\node[] (hdr) at (0,-2){};
+\node[] (led) at (-1,-0.5){};
+
+
+\node[align=center] (ant_text) at (0,4){Antenna};
+\node[align=center] (t_text) at (3,4){Transistor};
+\node[align=center] (btn_text) at (5,-1.5){Mode Select Button};
+\node[align=center] (hdr_text) at (0,-3.5){Programming Header};
+\node[align=center] (led_text) at (-5,-1.5){Status LEDs};
+
+\draw (ant_text) -- (ant+);
+\draw (ant_text) -- (ant-);
+\draw (t_text) -- (t);
+\draw (btn_text) -- (btn);
+\draw (hdr_text) -- (hdr);
+\draw (led_text) -- (led);
+
+\end{tikzpicture}
+\caption{Sensor prototype with STM8 microcontroller}
+\end{figure}
+#+END_EXPORT
+
+*** Software
+The controller was programmed in C using the Small Device C Compiler (SDCC) cite:sdcc. 
+A separate device library was developed for working with this type of microcontroller that will also be maintained 
+outside of this thesis. It is called /ulibSTM8/ and it aims to be very slim and only provide the most important 
+functionality to the application while using the least resources possible. \\
+Currently the following parts of the hardware are supported:
+1. Reset and Clock controller 
+ - Selection of main clock source
+ - Enable/disable clock distribution for peripherals
+ - Setting up clock dividers
+2. General Purpose Input/Output (GPIO)
+ - Pin setup (input/output, pullup, speed)
+ - Reading and writing to pins or whole ports
+3. UART
+ - Initialisation (Speed, stopbits, parity)
+ - Reading and Writing bytes
+4. SPI
+ - Initialisation (speed, polarity)
+ - SPI Instructions (Start,Transmit,Stop)
+
+The library also includes example programs with /Makefiles/ for building the library and flashing the generated program using
+the tool stm8flash cite:stm8flash.
+
+The application was designed to generate test frames with the character string 'TEST' as payload. The frame id is changed every
+$100ms$ and the new CRC8 value is calculated. \\
+Data is transmitted at a speed of $BAUD = 7812.5bit/s$. 
+
+*** Problems of the First Prototype
+The first prototype had some major drawbacks:
+- Ground plane in combination with a relative big PCB: The two power supply planes on both sides of the PCB result in very strong unwanted reflections that overload the SDR.
+- Slow microcontroller: The shifting approach discussed in Chapter [[sec:shifting]] calls for a fast serial bus to drive the transistor. The STM8 used in this design provides only a maximal clock of $16MHz$ at the SPI peripheral. Therefore a new hardware was designed.
+- The internal RC oscillator of the microcontroller has a high frequency drift over temperature. This of course results in a changing BAUD rate.
+
+** GNU Radio Block for Decoding
+To decode the continuous stream of data sent by the sensor an *Out Of Tree Module* was developed for GNU Radio. The block
+takes in a stream of bytes and waits for the synchronisation flag from the correlator. 
+When the flag is detected it reads in the whole packet and performs a CRC calculation with the CRC-8-CCITT polynomial over the whole frame 
+(of course excluding the preamble). 
+If the result is non-zero the checksum does not match with the received data and the frame is discarded. 
+If the result is zero and the ID field is different from the last decoded frame, all data is printed to the command line. \\ 
+The comparison of the ID field with the last frame ID was introduced to be able to transmit a frame many times, 
+but only outputting the information once. This should help with any occuring bit errors. \\
+
+# The main function of the block is constructed as a *Finite State Machine* which can be described with the following illustration:
+
+#+BEGIN_EXPORT latex
+%\begin{figure}[H]
+%\centering
+%\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto]
+%  \tikzstyle{every state}=[fill=red,draw=none,text=white]
+
+%  \node[initial,state] (Idle)                    {Idle};
+%  \node[state] (ReadID) [below of=Idle]                   {ReadID};
+%  \node[state] (ReadLen) [below of=ReadID]                   {ReadLen};
+%  \node[state] (ReadData) [below of=ReadLen]                   {ReadData};
+%  \node[state] (CheckCRC) [below of=ReadData]                   {CheckCRC};
+%  \node[state] (PrintData) [right of=ReadLen]                   {PrintData};
+
+
+
+%\path (Idle) edge                        node {syn = 1} (ReadID);
+%\path (ReadID) edge                      node {} (ReadLen);
+%\path (ReadLen) edge                        node {} (ReadData);
+%\path (ReadData) edge                        node {} (CheckCRC);
+
+
+%\path (CheckCRC) edge [bend right]       node[sloped,pos=0.6] {CRC correct} (PrintData)
+%		   edge [bend left]        node {CRC wrong} (Idle);
+%\path (PrintData) edge [bend right]                  node {} (Idle);
+
+%\end{tikzpicture}
+%\caption{Decoding Block FSM}
+%\end{figure}
+#+END_EXPORT
+
+*** Setup with gr_modtool
+The GNU Radio framework provides a tool called /gr_modtool/ which helps with creating GNU Radio blocks. It can generate basic code
+which all blocks share and it also sets up the /cmake/ build system. After calling 
+#+BEGIN_SRC bash
+gr_modtool newmod backscatter_decoder
+#+END_SRC
+the following directory structure is created:
+
+#+BEGIN_EXPORT latex
+\begin{table}[H]
+\centering
+\begin{tabular}{l | l}
+Name & Contents \\
+\hline
+apps & Complete GNU Radio Companion applications for installation\\
+examples & Example code \\
+include & C++ header files \\
+swig & Simplified Wrapper and Interface Generator files, not edited by the user\\
+cmake & Build system information \\
+docs & Documentation for the blocks \\
+grc & XML descriptors for the blocks\\
+lib & C source code and implementation specific headers\\
+python & Python parts of the block and unit tests\\
+
+\end{tabular}
+\caption{Created Directory structure from gr\_modtool}
+\end{table}
+#+END_EXPORT
+
+After creating the module it can be filled with blocks using:
+#+BEGIN_SRC bash
+gr_modtool add -t general -l cpp simpleDecoder
+#+END_SRC
+
+The ~-t~ option specifies the type of the block (general in this case) and the ~-l~ option specifies the main language 
+the block is written in (C++ here).
+
+This command creates the necessary ~.c~ and ~.h~ files for implementation of the block. It also can generate 
+Python or C++ test code. The cmake files for automatic compilation of the block are edited and the basic
+block description in XML for GRC is created.
+
+Of course this code generation is leaving some tags in the generated files where the user has to insert configuration and code 
+(for instance datatypes of the stream). 
+
+** GRC Flowplan
+The created decoder block was integrated into the GRC flowplan. The resulting flowplan is able to decode and output information 
+on the terminal. Furthermore all raw data is stored to disk for investigations and debugging reasons. 
+
+#+attr_latex: :placement [H] :width \linewidth
+#+CAPTION: GRC flowplan
+file:img/grc_flowplan_ask.png
+
+
+The grey blocks in the flowplan are deactivated and can be activated for debugging purpose. \\
+The input signal from the SDR goes through the following steps
+- Lowpass filtering to remove noise outside of the used frequency band.
+- Conversion of the complex signal to a real signal.
+# auweh
+- Downsampling to 1 sample/symbol with phase and frequency estimation using the Mueller & Müller algorithm.
+- Converting the samples to bit values.
+- Finding the Barker sequence using a correlator.
+- Decoding the frames using the implemented module. 
+
+
+*** IQ Data Recording
+To limit the influence of sensor/antenna position and possible interference from measurement to measurement an IQ file was 
+recorded using the following flowplan:
+
+#+attr_latex: :placement [H] :width 0.7\linewidth
+#+CAPTION: IQ Data recording
+file:img/grc_iq_recording.png
+ 
+The flowplan outputs all the recorded baseband data to a file on the computer using a /File sink/. This file can be read by a different flowplan using a 
+/File source/. The stream behaves exactly like when a SDR is providing the samples. This helps when comparing different algorithms for 
+demodulation and decoding, because the input signal is always the same. \\
+
+#+attr_latex: :placement [H] :width 0.3\linewidth
+#+CAPTION: IQ Data replay, SDR source not used (greyed out)
+file:img/grc_iq_source.png
+
+In this example the source is already downsampled by a factor of 32 but still the size of the IQ file increases quickly. 
+With a complex sample size of 8 Bytes, the size of the output file can be calculated by ref:eq:filesize.
+
+#+BEGIN_EXPORT latex
+\begin{equation}
+{filesize} = \frac{f_S}{dec} \cdot t \cdot 8\ {Byte/Sample}
+\label{eq:filesize}
+\end{equation}
+#+END_EXPORT
+
+
+* Shifting Approach
+<<sec:shifting>>
+To mitigate one huge limitation of the presented system, namely crosstalk and therefore RX overload, the transmitter could add
+a second modulation to the signal to shift the reflected signal away from the illumination signal. The receiver could then
+supress a big part of crosstalk by using a bandpass filter which only passes the shifted signal of interest. 
+Figure ref:fig:shift_concept illustrates this concept. \\  
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{tikzpicture} 
+\draw (0,0) node [draw,align=center] (sdrtx) {SDR TX};
+\draw (8,0) node [txantenna,xscale=1](anttx){};
+\draw (sdrtx.east) -- (anttx){};
+
+
+\draw (0,-3) node [draw,align=center] (sdrrx) {SDR RX};
+\draw (8,-3) node [rxantenna,xscale=1](antrx){};
+\draw (sdrrx.east) to [bandpass,align=center,l={Receive\\filter}] (antrx){};
+
+
+
+\end{tikzpicture}
+\caption{Shifting approach}
+\label{fig:shift_concept}
+\end{figure}
+#+END_EXPORT
+
+Figure ref:fig:shifting_freq shows the receive and transmit Local Oscillators (LOs) and where the corresponding signals are located 
+over frequency. For the first prototype a shifting frequency of $20MHz$ has been be used.
+
+#+BEGIN_EXPORT latex
+
+
+\begin{figure}[t!]
+\centering
+\begin{tikzpicture}
+
+\draw[thick,->] (0,0) -- (14,0) node[anchor=north west] {$f$};
+\draw[thick,->] (6,0) -- (6,2.5) node[above=0.5cm,anchor=north] {RX-LO};
+\draw[thick,->] (10,0) -- (10,2.5) node[above=0.5cm,anchor=north] {TX-LO};
+
+\draw[thick,red,rounded corners=1mm] (6.5,0) -- (6.5,1) -- (7,0.75) 
+node[above=0.75cm,anchor=north,align=center] {Data}
+-- (7.5,1) -- (7.5,0);
+
+\draw[thick,red,rounded corners=1mm] (12.5,0) -- (12.5,1) -- (13,0.75) node[above=0.75cm,anchor=north,align=center] {Data}
+-- (13.5,1) -- (13.5,0);
+
+\draw[dashed,red,rounded corners=1mm] (1.5,0) -- (1.5,1) -- (2,0.75)
+node[above=0.75cm,anchor=north,align=center] {Harmonic}
+-- (2.5,1) -- (2.5,0);
+
+\draw[dashed,rounded corners=1mm] (3.5,0) -- (4,3) -- (6,3)
+node[above=0.75cm,anchor=north] {RX Bandpass}
+-- (8,3) -- (8.5,0);
+
+\draw[<->] (10,-1) -- (8.5,-1)
+node[above=1cm,anchor=north,align=center] {Frequency \\ shift (${20}{MHz}$)}
+-- (7,-1);
+
+
+\end{tikzpicture}
+\caption{Shifting approach frequency view}
+\label{fig:shifting_freq}
+\end{figure}
+
+
+#+END_EXPORT
+
+** Microstrip Filter Design
+The intention was to design the receive filter as a microstrip filter with the tool QUCS cite:qucs. 
+The program makes designing filters very easy and it will display the scattering parameters (S parameters) of the generated filter. \\
+For a first test a simple capacitive gap filter was designed using the filter toolbox. The filter was designed to the following
+specifications:
+- Third order Butterworth
+- $f_{center} = 4.0005GHz$
+- $B = 1MHz$
+
+The passband was chosen to be at $4GHz$ because this lowers the length of the resonant elements for easier prototyping. Figure ref:fig:qucs_cap_gap
+shows the output of the tool. In Figure ref:fig:qucs_s21 the S parameters of the internal simulation can be seen. 
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/cap_gap.png}
+\caption{Capacitive gap filter in Qucs}
+\label{fig:qucs_cap_gap}
+\end{figure}
+#+END_EXPORT
+
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/s21_cap_gap.png}
+\caption{$S_{21}$ parameter of the filter prototype}
+\label{fig:qucs_s21}
+\end{figure}
+#+END_EXPORT
+
+*** Simulation with OpenEMS and Octave
+To get confirmation of the S parameters given by Qucs, the structure was simulated with OpenEMS cite:OpenEMS, a free and 
+open source electromagnetic field solver. OpenEMS uses a Finite-difference time-domain (FDTD) method to solve \linebreak[4]Maxwell's equations
+for the magnetic and electric field components in 3 dimensional structures. \\
+The filter was described in OpenEMS using the substrate with $\mathcal{E}_r = 4.5$ and a 2d metal layer for the microstrip elements. 
+In Figure ref:fig:cap_gap_openems the created structure can be seen. 
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/cap_gap_top.png}
+\caption{Model of the capacitive gap filter created for simulation}
+\label{fig:cap_gap_openems}
+\end{figure}
+#+END_EXPORT
+
+
+When simulating structures with the Finite-difference time-domain algorithm it is very important to define the simulation
+mesh the right way. \\
+There are some basic rules described on the website of OpenEMS \linebreak[4]cite:qucs:
+- Largest cells should not be bigger than $\frac{\lambda_{min}}{10}$. The wavelength $\lambda_{min}$ is defined by the highest simulation frequency and the material properties.
+- Edges of 2d metal elements should have a mesh line at $\frac{1}{3} \cdot {resolution}$ inside them and one $\frac{2}{3} \cdot {resolution}$ outside. This needs to be done to improve accuracy of the simulation. 
+- No big size steps (factor 2) from one cell to the next.
+- The resolution should be reduced as far as possible for less active regions to decrease simulation time. 
+
+Figure ref:fig:cen_gap shows the meshing for the centre gap of the filter where the rules above were applied.
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/center_cap_gap.png}
+\caption{FDTD mesh for the center gap of the filter}
+\label{fig:cen_gap}
+\end{figure}
+#+END_EXPORT
+
+FDTD requires an excitation port where energy is fed into the system. This port was placed on one side of the arrangement
+and a second one without an excitation signal was placed on the other side using the following Octave code. 
+#+BEGIN_SRC octave
+FDTD = SetGaussExcite( FDTD, f_max/2, f_max/2 );
+#+END_SRC
+
+This excites the system with a sinusoidal wave with a Gaussian envelope function. This results in a very broad spectrum of the 
+pulse which makes it perfect for a broadband simulation of the system. 
+The simulation was done for frequencies up to $f_{max} = 5GHz$. \\
+
+The simulation results in voltage and current values for the two ports. These results can then be used to calculate the S parameters. 
+The $S_{21}$ parameters for the capacitive gap filter are shown in Figure ref:fig:s_cap_gap. The plot shows a deviation of the passband 
+center frequency compared to the results of the filter synthesis. Also the x-axis is limited to -60dB because the simulation is only carried out
+to a certain level of energy left in the system. This is done to limit simulation time. 
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.2]
+\begin{axis}[enlarge x limits=false,enlarge y limits=false,
+    ylabel=S21 (dB),
+    xlabel=frequency (Hz),
+    legend pos = south east,
+    xmin = 3800000000, xmax = 4200000000,
+    ymin = -60, ymax = 0,
+    ]
+\addplot table [x index ={1}, y index ={0}, col sep=comma] {../sim/microstrip/s21_db.csv};
+\end{axis}
+\end{tikzpicture}
+\caption{Simulated S parameters for the capacitive gap filter}
+\label{fig:s_cap_gap}
+\end{figure}
+#+END_EXPORT
+It was concluded that the chosen filter could not be implement without reasonable deviation from the desired parameters. So the idea 
+of using microstrip filters was discarded in favour of integrated filters in Chapter [[sec:acoustic]].  
+Probably a different design type would be better for the specific purpose but no more resources were invested as good integrated filters
+exist that fit the application perfectly.
+
+** Acoustic Filters
+<<sec:acoustic>>
+   As a Microstrip Filter with a reasonable frequency response could not be manufactured and verified an off-the-shelf integrated
+   filter was used. Surface-Acoustic-Wave (SAW) and Bulk-Acoustic-Wave (BAW) filters were examined. 
+   This section will present the considerations for choosing such a filter and present advantages of one technology 
+   over the other. \\
+   SAW and BAW filters are mechanical filters which utilise the piezoelectric effect. They use
+mechanical waves that propagate either along the surface or through the bulk of the substrate. 
+   SAW filters are often easier to manufacture, but BAW filters have several advantages cite:aigner08_saw_baw_rf:
+   - Lower insertion loss
+   - Better skirt steepness
+   Both of those advantages come from the fact that SAW filters have very detailed structures with higher series resistance than their BAW 
+   counterparts where the whole bulk of the substrate is used by the waves. \\
+ 
+   #+attr_latex: :placement [H] :width 0.7\linewidth
+   #+CAPTION: SAW vs. BAW cite:TriQuint:baw_saw
+   file:img/baw_saw.jpg
+
+ 
+   As the main carrier for illumination will be emitted in the 2.4GHz ISM Band [fn::Global industrial, scientific and medical radio band, 2.4GHz to 2.5GHz]
+   the filter should have a high attenuation in this band. Furthermore a very steep transition from the passband to the stopband is desired.
+   High stopband attenuation is only needed at one specific frequency, so secondary passbands 
+   or bad stopband performance at other frequencies are not an issue. \\
+
+   For this reason the *B39242B8840P810* BAW filter was chosen. This filter was designed to reject LTE signals
+   near the 2.4GHz band. It has very high attenuation at the chosen illumination frequency of $2.5GHz$. Insertion loss 
+   at the return signal frequency is very low. Figure ref:fig:b39_s21 shows the attenuation/insertion loss of the filter. \\
+
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/B39242B8840P810.png}
+\caption{Attenuation/insertion loss of the chosen filter \cite{qualcomm:B8840}}
+\label{fig:b39_s21}
+\end{figure}
+#+END_EXPORT
+
+
+As explained before, the signal of interest will be at $f_c \pm 20MHz$ for the first prototype. Only the negative fundamental
+of the data signal will be used. So the signal of interest will be located at:
+#+BEGIN_EXPORT latex
+\begin{equation}
+f_{refl} = f_c - 20MHz = 2480MHz
+\end{equation}
+#+END_EXPORT
+
+This results in the following attenuations of the receive filter:
+  - Attenuation at carrier frequency (2.5GHz): $>60dB$ 
+  - Attenuation at centre frequency of reflected signal: $\sim2dB$ 
+
+A small 2-layer board with SMA connectors for input and output 
+was designed and manufactured. The board also includes the matching circuit for both input and output. The ports are matched 
+to $50\Omega$ with two $12nH$ inductors as recommended in the datasheet. \\
+
+
+  #+attr_latex: :placement [H] :width 0.7\linewidth
+  #+CAPTION: BAW filter prototype
+  file:img/baw_filter.jpg
+
+** Implementation of a Sensor
+   To test this concept a real sensor as in Chapter [[sec:prototype_active]] was developed. 
+   This time the node consisted of a NUCLEO-F413ZH, development board and a small adapter 
+   for the antenna/transistor combination. \\
+   To modulate the gate of the transistor the SPI peripheral was used just like with the first prototype for the active approach. 
+   The microcontroller on the board provides a maximal bitrate of $50 MBit/s$ for the SPI peripheral. 
+   Therefore the clock output of the bus has to be running at $f=100MHz$. For the first examples the clock was set to $20MHz$.  \\
+   To encode data into the clock signal, it was switched on or off depending on the current bit to be transmitted. 
+   This On-Off keying was done with a bitrate of $1kbit/s$. Figure ref:fig:spi_ook shows the SPI clock signal that is used to modulate the gate
+   of the transistor. Of course there are far more clock cycles per transmitted bit, this was simplified for illustrative purposes. \\
+
+   #+BEGIN_EXPORT latex
+   \begin{figure}[H]
+   \centering
+   \begin{tikztimingtable}
+     Data    & 8{H} 8{L} 8{H} \\  
+     SCLK    & 8{C} 8{L} 8{C} \\ 
+   \end{tikztimingtable}
+   \caption{OOK implementation using the SPI peripheral of a microcontroller}
+   \label{fig:spi_ook}
+   \end{figure}
+   #+END_EXPORT 
+
+   The firmware for the node was written in C with the firmware library 
+   libopencm3 cite:LibOpenCM3.
+   This library supports many different ARM-Cortex-M microcontrollers with the main focus on STM32 devices. 
+
+   The firmware also transmits a packet multiple times and advances the frame ID after a certain amount of transmissions.
+
+   #+BEGIN_EXPORT latex
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=0.8\textwidth]{img/nucleo_proto.jpg}
+   \caption{NUCLEO-F413ZH development board with the removable antenna/transistor combination}
+   \label{fig:nucleo_proto}
+   \end{figure}
+   #+END_EXPORT 
+
+   #+BEGIN_EXPORT latex
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=0.8\textwidth]{img/ook_20mhz.png}
+   \caption{$1kbit/s$ OOK signal of the $20MHz$ tone on the NUCLEO-F413ZH development board. Signal measured at the gate of
+   the transistor with $3.3V$ amplitude.}
+   \label{fig:spi_ook_osc}
+   \end{figure}
+   #+END_EXPORT 
+
+
+
+** Frame Structure
+The frame structure was chosen to be exactly the same as in the active approach in Chapter [[sec:active:frame_structure]].
+However, in a real world application variable packet length would probably be desired. Therefore the frame structure 
+illustrated in Figure ref:fig:frame_structure_var was proposed. The header has its own checksum to validate the received length field
+before receiving the payload.
+Also a 16 bit CRC should provide much better detection of corrupted frames than the 8 bit CRC in Chapter [[sec:active:frame_structure]].
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{bytefield}{16}
+	\bitheader{0,7,8,15} \\
+	
+	%\bitbox{4}{Tag} & \bitbox{12}{Mask} \\
+	\wordbox{2}{Preamble} \\
+	\begin{rightwordgroup}{Header}
+	\bitbox{8}{Frame ID} & \bitbox{8}{Length} \\
+	\wordbox{1}{CRC16 (Header)} 
+	\end{rightwordgroup} \\
+	\begin{rightwordgroup}{Payload}
+	\wordbox[lrt]{1}{Data} \\
+	\skippedwords \\
+	\wordbox[lrb]{1}{} \\
+	\wordbox{1}{CRC16 (Data)} 
+	\end{rightwordgroup} \\
+
+\end{bytefield}
+\caption{Frame structure}
+\label{fig:frame_structure_var}
+\end{figure}
+#+END_EXPORT
+
+
+* Limiting Factors
+** Crosstalk and Dynamic Range of the SDR
+As noted in previous chapters a huge hurdle when working with backscatter communication
+is the crosstalk between the RX and TX channels. \\
+The ADALM-PLUTO from Analog Devices seems to perform quite bad when other strong signals are 
+present at the input. \\ 
+
+
+This can be explained by the rather low /Third-Order Input Intermodulation Intercept Point/ at $-14dBm$ of the AD9363 frontend 
+chip at $2.4GHz$ cite:Analog:AD9363. A comparable integrated circuit would be the LMS7002M with IIP3 point at $4dBm$ cite:Lime:LMS7002M. \\
+
+
+** Antenna Beam Patterns
+The antennas play a very big role when constructing a system like this. 
+A very high sidelobe rejection is desired to limit crosstalk between RX and TX channels. \\
+Also the antennas need to have very high directivity to increase gain but also 
+to eliminate the influence of other nearby communication systems like /Wifi/, /Bluetooth/,
+/ZigBee/ and many others. \\
+The usage of waveguide antennas was considered but not implemented because of the high complexity 
+when building such antennas.
+As stated before they would be a better choice as they usually have higher gain with far lower side lobes than the Biquad antenna 
+used in this study. \\
+
+** TX Power Reduction
+On-chip and on-board crosstalk between transmit and receive channel also reduces performance
+of the system. To reduce this effect an external amplifier can be inserted in the TX path 
+and the TX power can be reduced drastically. This results in less crosstalk and thus 
+RX gain can be increased further. \\
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{tikzpicture} 
+\draw (0,0) node [draw,align=center] (sdrtx) {SDR TX} node[above=0.75cm,anchor=north,align=center] {-20dBm};
+\draw (8,0) node [txantenna,xscale=1](anttx){} node[above=0.75cm,anchor=north,align=center] {0dBm};
+\draw (sdrtx.east) to [amp,align=center,l={Amplifier\\+20dB}] (8,0){};
+
+
+\draw (0,-3) node [draw,align=center] (sdrrx) {SDR RX};
+\draw (8,-3) node [rxantenna,xscale=1](antrx){};
+\draw (sdrrx.east) to [bandpass,align=center,l={Receive\\filter}] (antrx){};
+
+\draw[dashed, rounded corners=2mm] (-2,1) -- (-2,-4) -- (2.5,-4) -- (2.5,1) -- (0,1) 
+node[above=0.75cm,anchor=north] {SDR PCB}
+-- (-2,1);
+
+\draw[->] ([xshift=1cm,yshift=-0.5cm]sdrtx.east) --
+([xshift=1cm,yshift=-0.75cm]sdrtx.east) node[left=1cm,anchor=north,align=center] {Reduced\\x-talk}
+-- ([xshift=1cm,yshift=0.5cm]sdrrx.east);
+
+\end{tikzpicture}
+\caption{On-chip/board crosstalk reduction}
+\end{figure}
+#+END_EXPORT
+
+This approach could be taken even further by turning off the TX path of the SDR and using 
+a separate Oscillator/Transmitter to generate the illumination signal. But this would also introduce
+several other problems as TX and RX frequency drifts are not locked anymore because now
+there are multiple clock sources (crystal oscillators) instead of a single one in the SDR.
+
+** Bit Synchronisation
+Bit synchronisation and therefore phase estimation of the received signal plays an essential role when decoding the reflected signal.
+As the system is very vulnerable to long transmissions without a level change, i.e. transmission of the same bit value,
+a concept to eliminate mentioned sequences could help to improve performance of the system. 
+
+*** Bit Stuffing
+One approach is to insert bits with the different level into long sequences of a constant level. This concept is also used in
+CAN and USB. For instance the sequence '01011110' would result in 
+#+BEGIN_EXPORT latex 
+'010111\colorbox{lightgreen}{\makebox[0.1em]{\strut{0}}}10' 
+#+END_EXPORT
+if the maximum length of a constant level is 3 bit. The green bit has been inserted. Of course the receiver has to remove those 
+inserted bits. 
+
+
+
+*** Self-Clocking Signals
+The application of self-clocking signals like the Manchester Code used for certain standards of Ethernet could help by guaranteeing 
+at least one level change per bit. When using Manchester Code the value of a symbol is not encoded in the level of the signal, but
+the direction of the edge. Using such a code would half the bitrate for the same bandwidth but this is not
+a concern in this application as only small bitrates are needed anyways. Figure ref:fig:man_code illustrates Manchester coding for 
+a short sequence. \\
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\begin{tikztimingtable}
+Data    & 2{H} 4{L} 4{H} \\  
+Manchester encoded    & 1{H} 1{L} 1{L} 1{H} 1{L} 1{H} 1{H} 1{L} 1{H} 1{L} \\ 
+\extracode
+\begin{pgfonlayer}{background}
+\begin{scope}[semitransparent,semithick]
+        \vertlines[red]{1,3,5,7,9}
+        \end{scope}
+	\end{pgfonlayer}
+\end{tikztimingtable}
+\caption{Manchester code for '10011' bit sequence}
+\label{fig:man_code}
+\end{figure}
+#+END_EXPORT 
+
+** Bit Errors
+During testing a very high amount of bit errors due to one of the following reasons were noticed.
+- Synchronisation issues due to bad clock recovery.
+- Low SNR due to fourth power losses over distance.
+- Skipped samples because of buffer overflows within the SDR.
+
+Currently the sensor retransmits every frame multiple times so that the base station gets one packet 
+without any bit errors and therefore a correct checksum. This approach is highly inefficient as
+one bit error invalidates the whole frame. 
+
+To mitigate these causes /Forward Error Correction/ could be introduced. 
+Also the bitrate of the information signal could be lowered even further to improve the received 
+power per symbol $E_b$. 
+
+
+* Results
+The work resulted in two working systems for the /Active/ and /Shifting approach/. Both systems worked 
+but performance was not good enough to be used in a real application. \\
+The prototype for the Shifting Approach was found to be working with a maximum range up to 2 meters. The Active Approach system
+could only be decoded reliably up to 1 meter. \\
+As predicted the Active Approach performed worse because of mixer overload in the front end of the SDR. 
+The Shifting approach prototype was not subject to any kind of overload even at full TX power and RX gain. The SDR can only deliver
+about 8dBm at $2.5GHz$ cite:analog:transmit.
+Overall the thesis resulted in a good understanding of what is possible using the presented concepts. But also several 
+shortcomings were found and investigated.  
+Figure ref:fig:result_decoder_1m and ref:fig:result_decoder_2m show the decoder output of two test runs with the 
+shifting approach. 
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\verb|ID=13; ASCII: TEST| \\
+\verb|ID=14; ASCII: TEST| \\
+\verb|ID=15; ASCII: TEST| \\
+\verb|ID=16; ASCII: TEST| \\
+\verb|ID=17; ASCII: TEST| \\
+\verb|ID=18; ASCII: TEST| \\
+\verb|ID=19; ASCII: TEST| \\
+\verb|ID=20; ASCII: TEST| \\
+\verb|ID=21; ASCII: TEST| \\
+\verb|ID=22; ASCII: TEST| \\
+\verb|ID=23; ASCII: TEST| \\
+\caption{Active Approach: Decoder output with sensor at 1 meter. Nearly all frames are decoded with a valid checksum.}
+\label{fig:result_decoder_1m}
+\end{figure}
+#+END_EXPORT
+
+
+#+BEGIN_EXPORT latex
+\begin{figure}[H]
+\centering
+\verb|ID=138; ASCII: TEST| \\
+\verb|ID=165; ASCII: TEST| \\
+\verb|ID=170; ASCII: TEST| \\
+\caption{Active Approach: Decoder output with sensor at 2 meters. Only a small amount of frames are decoded with a valid checksum.}
+\label{fig:result_decoder_2m}
+\end{figure}
+#+END_EXPORT
+
+The passive approach could not be implemented successfully because of the challenges discussed in Chapter [[sec:princ_act]]. 
+
+
+** Applicability of SDRs for Prototyping RF Systems
+The study has shown that SDRs can be used to rapidly test and prototype communication systems. The use of the GNU Radio framework
+made experiments very easy and several concepts could be tried with minor or even no changes of the used hardware. 
+All flowgraphs performed well without any samples being omitted. The recording of IQ data has proven to be particularly useful
+as algorithms could be compared using a common base. \\
+
+
+
+
+** Considerations for Future Uses
+*** Ultra Low Power Sensors
+As stated before the nodes use only tiny amounts of power for processing and nearly no power for transmission. 
+With efficient microcontrollers and good use of low power states, the sensor could transmit using only currents
+in the range of a few tens of microamperes. 
+Compared to an active transmitter where oscillators and power amplifiers are needed this is negligible. \\
+
+*** Surveillance
+The use of backscatter communication is particularly interesting for surveillance as the node will not emit any radio 
+signals without being illuminated with a carrier wave. This make the node nearly undetectable. 
+The base station could also introduce concepts like frequency hopping to further disguise the illumination signal. \\
+Also nearby high power signals (Wifi or mobile communication systems) could be used as illumination signals as 
+the signal of the wiretap will appear around every power source near the resonant frequency of the antenna.
+In this approach the illumination signal would have to be estimated and subtracted from the reflected signal to get 
+the signal from the wiretap. This of course would be very hard to implement. 
+
+
+* Summary 
+Backscatter communication was shown to be a viable concept for short-range communication. The introduction of a 
+frequency offset for the reflected signal has proven itself to be very useful, particularly when transmit power is increased.
+Due to the fact that inexpensive integrated filters are available for the 2.4GHz ISM band, the Shifting Approach can be 
+implemented easily.
+The SDR was an important tool for development, but for a low-cost solution different receiver architectures should be used. \\
+Testing with the prototypes showed that high gain antennas are essential for backscatter communication. This is due to the 
+fact that the sensor scatters power in all directions. Therefore power losses are proportional to range $R^4$. Conventional 
+communication systems only have to deal with losses proportional to $R^2$. These high gain antennas are difficult to integrate 
+into products and they can also increase system cost due to three-dimensional construction.
+Another drawback of the usage of directional antennas is that the base station has to be pointing directly at the sensor. When
+using multiple sensors in different locations the direction of the antennas has to be adjusted. \\
+All in all backscatter communication presents an interesting technology, but it is only practicable for niche applications
+due to the limitations presented. 
+
+
+
+bibliography:retroreflectors.bib
+bibliographystyle:plainnat
+
+
+#+BEGIN_EXPORT latex
+
+\chapter*{Contents of the DVD}
+
+\noindent{\Large\textbf{Path:}} 	\hspace{2mm}	\href{/.}{/} \\
+
+{
+\centering
+\begin{tabular}{ll}
+  {Thesis.pdf} \dotfill  & {This document} \\
+  {Kurzfassung.txt} \dotfill  & {Kurzfassung} \\
+  {Abstract.txt} \dotfill  & {Abstract} \\
+  {doc/} \dotfill  & {Documentation, \LaTeX\space files, images} \\
+  {dsp/} \dotfill  & {Digital signal processing, GRC} \\
+  {pcb/} \dotfill  & {Printed circuit board files} \\
+  {sim/} \dotfill  & {FDTD simulations} \\
+
+\end{tabular}
+}
+\end{document}
+
+#+END_EXPORT

@@ -1,0 +1,323 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.5.0 #9253 (Mar 24 2016) (Linux)
+                                      4 ; This file was generated Sat May 12 12:35:37 2018
+                                      5 ;--------------------------------------------------------
+                                      6 	.module gpio
+                                      7 	.optsdcc -mstm8
+                                      8 	
+                                      9 ;--------------------------------------------------------
+                                     10 ; Public variables in this module
+                                     11 ;--------------------------------------------------------
+                                     12 	.globl _gpio_set
+                                     13 	.globl _gpio_clr
+                                     14 	.globl _gpio_mode
+                                     15 	.globl _gpio_toggle
+                                     16 	.globl _gpio_read
+                                     17 	.globl _gpio_write_port
+                                     18 	.globl _gpio_read_port
+                                     19 ;--------------------------------------------------------
+                                     20 ; ram data
+                                     21 ;--------------------------------------------------------
+                                     22 	.area DATA
+                                     23 ;--------------------------------------------------------
+                                     24 ; ram data
+                                     25 ;--------------------------------------------------------
+                                     26 	.area INITIALIZED
+                                     27 ;--------------------------------------------------------
+                                     28 ; absolute external ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area DABS (ABS)
+                                     31 ;--------------------------------------------------------
+                                     32 ; global & static initialisations
+                                     33 ;--------------------------------------------------------
+                                     34 	.area HOME
+                                     35 	.area GSINIT
+                                     36 	.area GSFINAL
+                                     37 	.area GSINIT
+                                     38 ;--------------------------------------------------------
+                                     39 ; Home
+                                     40 ;--------------------------------------------------------
+                                     41 	.area HOME
+                                     42 	.area HOME
+                                     43 ;--------------------------------------------------------
+                                     44 ; code
+                                     45 ;--------------------------------------------------------
+                                     46 	.area CODE
+                                     47 ;	../../../../ulibSTM8/lib/gpio.c: 4: void gpio_set(gpio_t* port, gpio_pin_t pin)
+                                     48 ;	-----------------------------------------
+                                     49 ;	 function gpio_set
+                                     50 ;	-----------------------------------------
+      000000                         51 _gpio_set:
+                                     52 ;	../../../../ulibSTM8/lib/gpio.c: 6: port->odr |= pin;
+      000000 1E 03            [ 2]   53 	ldw	x, (0x03, sp)
+      000002 F6               [ 1]   54 	ld	a, (x)
+      000003 1A 05            [ 1]   55 	or	a, (0x05, sp)
+      000005 F7               [ 1]   56 	ld	(x), a
+      000006 81               [ 4]   57 	ret
+                                     58 ;	../../../../ulibSTM8/lib/gpio.c: 9: void gpio_clr(gpio_t* port, gpio_pin_t pin)
+                                     59 ;	-----------------------------------------
+                                     60 ;	 function gpio_clr
+                                     61 ;	-----------------------------------------
+      000007                         62 _gpio_clr:
+      000007 88               [ 1]   63 	push	a
+                                     64 ;	../../../../ulibSTM8/lib/gpio.c: 11: port->odr &= ~pin;
+      000008 1E 04            [ 2]   65 	ldw	x, (0x04, sp)
+      00000A F6               [ 1]   66 	ld	a, (x)
+      00000B 6B 01            [ 1]   67 	ld	(0x01, sp), a
+      00000D 7B 06            [ 1]   68 	ld	a, (0x06, sp)
+      00000F 43               [ 1]   69 	cpl	a
+      000010 14 01            [ 1]   70 	and	a, (0x01, sp)
+      000012 F7               [ 1]   71 	ld	(x), a
+      000013 84               [ 1]   72 	pop	a
+      000014 81               [ 4]   73 	ret
+                                     74 ;	../../../../ulibSTM8/lib/gpio.c: 15: void gpio_mode(gpio_t* port, gpio_pin_t pin, gpio_mode_t mode){
+                                     75 ;	-----------------------------------------
+                                     76 ;	 function gpio_mode
+                                     77 ;	-----------------------------------------
+      000015                         78 _gpio_mode:
+      000015 52 07            [ 2]   79 	sub	sp, #7
+                                     80 ;	../../../../ulibSTM8/lib/gpio.c: 17: switch (mode) {
+      000017 7B 0D            [ 1]   81 	ld	a, (0x0d, sp)
+      000019 A1 07            [ 1]   82 	cp	a, #0x07
+      00001B 23 03            [ 2]   83 	jrule	00117$
+      00001D CCr01r15         [ 2]   84 	jp	00111$
+      000020                         85 00117$:
+                                     86 ;	../../../../ulibSTM8/lib/gpio.c: 20: port->ddr &= ~pin;
+      000020 16 0A            [ 2]   87 	ldw	y, (0x0a, sp)
+      000022 17 06            [ 2]   88 	ldw	(0x06, sp), y
+      000024 7B 0C            [ 1]   89 	ld	a, (0x0c, sp)
+      000026 43               [ 1]   90 	cpl	a
+      000027 6B 03            [ 1]   91 	ld	(0x03, sp), a
+      000029 1E 06            [ 2]   92 	ldw	x, (0x06, sp)
+      00002B 5C               [ 2]   93 	incw	x
+      00002C 5C               [ 2]   94 	incw	x
+      00002D 1F 01            [ 2]   95 	ldw	(0x01, sp), x
+                                     96 ;	../../../../ulibSTM8/lib/gpio.c: 21: port->cr1 &= ~pin;
+      00002F 16 06            [ 2]   97 	ldw	y, (0x06, sp)
+      000031 72 A9 00 03      [ 2]   98 	addw	y, #0x0003
+                                     99 ;	../../../../ulibSTM8/lib/gpio.c: 22: port->cr2 &= ~pin;
+      000035 1E 06            [ 2]  100 	ldw	x, (0x06, sp)
+      000037 1C 00 04         [ 2]  101 	addw	x, #0x0004
+      00003A 1F 04            [ 2]  102 	ldw	(0x04, sp), x
+                                    103 ;	../../../../ulibSTM8/lib/gpio.c: 17: switch (mode) {
+      00003C 5F               [ 1]  104 	clrw	x
+      00003D 7B 0D            [ 1]  105 	ld	a, (0x0d, sp)
+      00003F 97               [ 1]  106 	ld	xl, a
+      000040 58               [ 2]  107 	sllw	x
+      000041 DEu00u45         [ 2]  108 	ldw	x, (#00118$, x)
+      000044 FC               [ 2]  109 	jp	(x)
+      000045                        110 00118$:
+      000045r00r55                  111 	.dw	#00101$
+      000047r00r6E                  112 	.dw	#00102$
+      000049r00r87                  113 	.dw	#00103$
+      00004Br00r9F                  114 	.dw	#00104$
+      00004Dr00rB7                  115 	.dw	#00105$
+      00004Fr00rCF                  116 	.dw	#00106$
+      000051r00rE7                  117 	.dw	#00107$
+      000053r00rFF                  118 	.dw	#00108$
+                                    119 ;	../../../../ulibSTM8/lib/gpio.c: 19: case gpio_mode_in: {
+      000055                        120 00101$:
+                                    121 ;	../../../../ulibSTM8/lib/gpio.c: 20: port->ddr &= ~pin;
+      000055 1E 01            [ 2]  122 	ldw	x, (0x01, sp)
+      000057 F6               [ 1]  123 	ld	a, (x)
+      000058 14 03            [ 1]  124 	and	a, (0x03, sp)
+      00005A 1E 01            [ 2]  125 	ldw	x, (0x01, sp)
+      00005C F7               [ 1]  126 	ld	(x), a
+                                    127 ;	../../../../ulibSTM8/lib/gpio.c: 21: port->cr1 &= ~pin;
+      00005D 90 F6            [ 1]  128 	ld	a, (y)
+      00005F 14 03            [ 1]  129 	and	a, (0x03, sp)
+      000061 90 F7            [ 1]  130 	ld	(y), a
+                                    131 ;	../../../../ulibSTM8/lib/gpio.c: 22: port->cr2 &= ~pin;
+      000063 1E 04            [ 2]  132 	ldw	x, (0x04, sp)
+      000065 F6               [ 1]  133 	ld	a, (x)
+      000066 14 03            [ 1]  134 	and	a, (0x03, sp)
+      000068 1E 04            [ 2]  135 	ldw	x, (0x04, sp)
+      00006A F7               [ 1]  136 	ld	(x), a
+                                    137 ;	../../../../ulibSTM8/lib/gpio.c: 23: break;
+      00006B CCr01r15         [ 2]  138 	jp	00111$
+                                    139 ;	../../../../ulibSTM8/lib/gpio.c: 25: case gpio_mode_in_pup: {
+      00006E                        140 00102$:
+                                    141 ;	../../../../ulibSTM8/lib/gpio.c: 26: port->ddr &= ~pin;
+      00006E 1E 01            [ 2]  142 	ldw	x, (0x01, sp)
+      000070 F6               [ 1]  143 	ld	a, (x)
+      000071 14 03            [ 1]  144 	and	a, (0x03, sp)
+      000073 1E 01            [ 2]  145 	ldw	x, (0x01, sp)
+      000075 F7               [ 1]  146 	ld	(x), a
+                                    147 ;	../../../../ulibSTM8/lib/gpio.c: 27: port->cr1 |= pin;
+      000076 90 F6            [ 1]  148 	ld	a, (y)
+      000078 1A 0C            [ 1]  149 	or	a, (0x0c, sp)
+      00007A 90 F7            [ 1]  150 	ld	(y), a
+                                    151 ;	../../../../ulibSTM8/lib/gpio.c: 28: port->cr2 &= ~pin;
+      00007C 1E 04            [ 2]  152 	ldw	x, (0x04, sp)
+      00007E F6               [ 1]  153 	ld	a, (x)
+      00007F 14 03            [ 1]  154 	and	a, (0x03, sp)
+      000081 1E 04            [ 2]  155 	ldw	x, (0x04, sp)
+      000083 F7               [ 1]  156 	ld	(x), a
+                                    157 ;	../../../../ulibSTM8/lib/gpio.c: 29: break;
+      000084 CCr01r15         [ 2]  158 	jp	00111$
+                                    159 ;	../../../../ulibSTM8/lib/gpio.c: 31: case gpio_mode_in_int: {
+      000087                        160 00103$:
+                                    161 ;	../../../../ulibSTM8/lib/gpio.c: 32: port->ddr &= ~pin;
+      000087 1E 01            [ 2]  162 	ldw	x, (0x01, sp)
+      000089 F6               [ 1]  163 	ld	a, (x)
+      00008A 14 03            [ 1]  164 	and	a, (0x03, sp)
+      00008C 1E 01            [ 2]  165 	ldw	x, (0x01, sp)
+      00008E F7               [ 1]  166 	ld	(x), a
+                                    167 ;	../../../../ulibSTM8/lib/gpio.c: 33: port->cr1 &= ~pin;
+      00008F 90 F6            [ 1]  168 	ld	a, (y)
+      000091 14 03            [ 1]  169 	and	a, (0x03, sp)
+      000093 90 F7            [ 1]  170 	ld	(y), a
+                                    171 ;	../../../../ulibSTM8/lib/gpio.c: 34: port->cr2 |= pin;
+      000095 1E 04            [ 2]  172 	ldw	x, (0x04, sp)
+      000097 F6               [ 1]  173 	ld	a, (x)
+      000098 1A 0C            [ 1]  174 	or	a, (0x0c, sp)
+      00009A 1E 04            [ 2]  175 	ldw	x, (0x04, sp)
+      00009C F7               [ 1]  176 	ld	(x), a
+                                    177 ;	../../../../ulibSTM8/lib/gpio.c: 35: break;
+      00009D 20 76            [ 2]  178 	jra	00111$
+                                    179 ;	../../../../ulibSTM8/lib/gpio.c: 37: case gpio_mode_in_int_pup: {
+      00009F                        180 00104$:
+                                    181 ;	../../../../ulibSTM8/lib/gpio.c: 38: port->ddr &= ~pin;
+      00009F 1E 01            [ 2]  182 	ldw	x, (0x01, sp)
+      0000A1 F6               [ 1]  183 	ld	a, (x)
+      0000A2 14 03            [ 1]  184 	and	a, (0x03, sp)
+      0000A4 1E 01            [ 2]  185 	ldw	x, (0x01, sp)
+      0000A6 F7               [ 1]  186 	ld	(x), a
+                                    187 ;	../../../../ulibSTM8/lib/gpio.c: 39: port->cr1 |= pin;
+      0000A7 90 F6            [ 1]  188 	ld	a, (y)
+      0000A9 1A 0C            [ 1]  189 	or	a, (0x0c, sp)
+      0000AB 90 F7            [ 1]  190 	ld	(y), a
+                                    191 ;	../../../../ulibSTM8/lib/gpio.c: 40: port->cr2 |= pin;
+      0000AD 1E 04            [ 2]  192 	ldw	x, (0x04, sp)
+      0000AF F6               [ 1]  193 	ld	a, (x)
+      0000B0 1A 0C            [ 1]  194 	or	a, (0x0c, sp)
+      0000B2 1E 04            [ 2]  195 	ldw	x, (0x04, sp)
+      0000B4 F7               [ 1]  196 	ld	(x), a
+                                    197 ;	../../../../ulibSTM8/lib/gpio.c: 41: break;
+      0000B5 20 5E            [ 2]  198 	jra	00111$
+                                    199 ;	../../../../ulibSTM8/lib/gpio.c: 44: case gpio_mode_out_od: {
+      0000B7                        200 00105$:
+                                    201 ;	../../../../ulibSTM8/lib/gpio.c: 45: port->ddr |= pin;
+      0000B7 1E 01            [ 2]  202 	ldw	x, (0x01, sp)
+      0000B9 F6               [ 1]  203 	ld	a, (x)
+      0000BA 1A 0C            [ 1]  204 	or	a, (0x0c, sp)
+      0000BC 1E 01            [ 2]  205 	ldw	x, (0x01, sp)
+      0000BE F7               [ 1]  206 	ld	(x), a
+                                    207 ;	../../../../ulibSTM8/lib/gpio.c: 46: port->cr1 &= ~pin;
+      0000BF 90 F6            [ 1]  208 	ld	a, (y)
+      0000C1 14 03            [ 1]  209 	and	a, (0x03, sp)
+      0000C3 90 F7            [ 1]  210 	ld	(y), a
+                                    211 ;	../../../../ulibSTM8/lib/gpio.c: 47: port->cr2 &= ~pin;
+      0000C5 1E 04            [ 2]  212 	ldw	x, (0x04, sp)
+      0000C7 F6               [ 1]  213 	ld	a, (x)
+      0000C8 14 03            [ 1]  214 	and	a, (0x03, sp)
+      0000CA 1E 04            [ 2]  215 	ldw	x, (0x04, sp)
+      0000CC F7               [ 1]  216 	ld	(x), a
+                                    217 ;	../../../../ulibSTM8/lib/gpio.c: 48: break;
+      0000CD 20 46            [ 2]  218 	jra	00111$
+                                    219 ;	../../../../ulibSTM8/lib/gpio.c: 50: case gpio_mode_out_pp: {
+      0000CF                        220 00106$:
+                                    221 ;	../../../../ulibSTM8/lib/gpio.c: 51: port->ddr |= pin;
+      0000CF 1E 01            [ 2]  222 	ldw	x, (0x01, sp)
+      0000D1 F6               [ 1]  223 	ld	a, (x)
+      0000D2 1A 0C            [ 1]  224 	or	a, (0x0c, sp)
+      0000D4 1E 01            [ 2]  225 	ldw	x, (0x01, sp)
+      0000D6 F7               [ 1]  226 	ld	(x), a
+                                    227 ;	../../../../ulibSTM8/lib/gpio.c: 52: port->cr1 |= pin;
+      0000D7 90 F6            [ 1]  228 	ld	a, (y)
+      0000D9 1A 0C            [ 1]  229 	or	a, (0x0c, sp)
+      0000DB 90 F7            [ 1]  230 	ld	(y), a
+                                    231 ;	../../../../ulibSTM8/lib/gpio.c: 53: port->cr2 &= ~pin;
+      0000DD 1E 04            [ 2]  232 	ldw	x, (0x04, sp)
+      0000DF F6               [ 1]  233 	ld	a, (x)
+      0000E0 14 03            [ 1]  234 	and	a, (0x03, sp)
+      0000E2 1E 04            [ 2]  235 	ldw	x, (0x04, sp)
+      0000E4 F7               [ 1]  236 	ld	(x), a
+                                    237 ;	../../../../ulibSTM8/lib/gpio.c: 54: break;
+      0000E5 20 2E            [ 2]  238 	jra	00111$
+                                    239 ;	../../../../ulibSTM8/lib/gpio.c: 56: case gpio_mode_out_od_fast: {
+      0000E7                        240 00107$:
+                                    241 ;	../../../../ulibSTM8/lib/gpio.c: 57: port->ddr |= pin;
+      0000E7 1E 01            [ 2]  242 	ldw	x, (0x01, sp)
+      0000E9 F6               [ 1]  243 	ld	a, (x)
+      0000EA 1A 0C            [ 1]  244 	or	a, (0x0c, sp)
+      0000EC 1E 01            [ 2]  245 	ldw	x, (0x01, sp)
+      0000EE F7               [ 1]  246 	ld	(x), a
+                                    247 ;	../../../../ulibSTM8/lib/gpio.c: 58: port->cr1 &= ~pin;
+      0000EF 90 F6            [ 1]  248 	ld	a, (y)
+      0000F1 14 03            [ 1]  249 	and	a, (0x03, sp)
+      0000F3 90 F7            [ 1]  250 	ld	(y), a
+                                    251 ;	../../../../ulibSTM8/lib/gpio.c: 59: port->cr2 |= pin;
+      0000F5 1E 04            [ 2]  252 	ldw	x, (0x04, sp)
+      0000F7 F6               [ 1]  253 	ld	a, (x)
+      0000F8 1A 0C            [ 1]  254 	or	a, (0x0c, sp)
+      0000FA 1E 04            [ 2]  255 	ldw	x, (0x04, sp)
+      0000FC F7               [ 1]  256 	ld	(x), a
+                                    257 ;	../../../../ulibSTM8/lib/gpio.c: 60: break;
+      0000FD 20 16            [ 2]  258 	jra	00111$
+                                    259 ;	../../../../ulibSTM8/lib/gpio.c: 62: case gpio_mode_out_pp_fast: {
+      0000FF                        260 00108$:
+                                    261 ;	../../../../ulibSTM8/lib/gpio.c: 63: port->ddr |= pin;
+      0000FF 1E 01            [ 2]  262 	ldw	x, (0x01, sp)
+      000101 F6               [ 1]  263 	ld	a, (x)
+      000102 1A 0C            [ 1]  264 	or	a, (0x0c, sp)
+      000104 1E 01            [ 2]  265 	ldw	x, (0x01, sp)
+      000106 F7               [ 1]  266 	ld	(x), a
+                                    267 ;	../../../../ulibSTM8/lib/gpio.c: 64: port->cr1 |= pin;
+      000107 90 F6            [ 1]  268 	ld	a, (y)
+      000109 1A 0C            [ 1]  269 	or	a, (0x0c, sp)
+      00010B 90 F7            [ 1]  270 	ld	(y), a
+                                    271 ;	../../../../ulibSTM8/lib/gpio.c: 65: port->cr2 |= pin;
+      00010D 1E 04            [ 2]  272 	ldw	x, (0x04, sp)
+      00010F F6               [ 1]  273 	ld	a, (x)
+      000110 1A 0C            [ 1]  274 	or	a, (0x0c, sp)
+      000112 1E 04            [ 2]  275 	ldw	x, (0x04, sp)
+      000114 F7               [ 1]  276 	ld	(x), a
+                                    277 ;	../../../../ulibSTM8/lib/gpio.c: 71: }
+      000115                        278 00111$:
+      000115 5B 07            [ 2]  279 	addw	sp, #7
+      000117 81               [ 4]  280 	ret
+                                    281 ;	../../../../ulibSTM8/lib/gpio.c: 75: void gpio_toggle(gpio_t* port, gpio_pin_t pin)
+                                    282 ;	-----------------------------------------
+                                    283 ;	 function gpio_toggle
+                                    284 ;	-----------------------------------------
+      000118                        285 _gpio_toggle:
+                                    286 ;	../../../../ulibSTM8/lib/gpio.c: 77: port->odr = port->odr ^ pin;
+      000118 1E 03            [ 2]  287 	ldw	x, (0x03, sp)
+      00011A F6               [ 1]  288 	ld	a, (x)
+      00011B 18 05            [ 1]  289 	xor	a, (0x05, sp)
+      00011D F7               [ 1]  290 	ld	(x), a
+      00011E 81               [ 4]  291 	ret
+                                    292 ;	../../../../ulibSTM8/lib/gpio.c: 81: uint8_t gpio_read(gpio_t* port, gpio_pin_t pin)
+                                    293 ;	-----------------------------------------
+                                    294 ;	 function gpio_read
+                                    295 ;	-----------------------------------------
+      00011F                        296 _gpio_read:
+                                    297 ;	../../../../ulibSTM8/lib/gpio.c: 83: return (port->idr & pin);
+      00011F 1E 03            [ 2]  298 	ldw	x, (0x03, sp)
+      000121 E6 01            [ 1]  299 	ld	a, (0x1, x)
+      000123 14 05            [ 1]  300 	and	a, (0x05, sp)
+      000125 81               [ 4]  301 	ret
+                                    302 ;	../../../../ulibSTM8/lib/gpio.c: 86: void gpio_write_port(gpio_t* port, uint8_t val)
+                                    303 ;	-----------------------------------------
+                                    304 ;	 function gpio_write_port
+                                    305 ;	-----------------------------------------
+      000126                        306 _gpio_write_port:
+                                    307 ;	../../../../ulibSTM8/lib/gpio.c: 88: port->odr = val;
+      000126 1E 03            [ 2]  308 	ldw	x, (0x03, sp)
+      000128 7B 05            [ 1]  309 	ld	a, (0x05, sp)
+      00012A F7               [ 1]  310 	ld	(x), a
+      00012B 81               [ 4]  311 	ret
+                                    312 ;	../../../../ulibSTM8/lib/gpio.c: 91: uint8_t gpio_read_port(gpio_t* port)
+                                    313 ;	-----------------------------------------
+                                    314 ;	 function gpio_read_port
+                                    315 ;	-----------------------------------------
+      00012C                        316 _gpio_read_port:
+                                    317 ;	../../../../ulibSTM8/lib/gpio.c: 93: return port->idr;
+      00012C 1E 03            [ 2]  318 	ldw	x, (0x03, sp)
+      00012E E6 01            [ 1]  319 	ld	a, (0x1, x)
+      000130 81               [ 4]  320 	ret
+                                    321 	.area CODE
+                                    322 	.area INITIALIZER
+                                    323 	.area CABS (ABS)

@@ -1,0 +1,58 @@
+XH3
+H A areas 6 global symbols
+M clk
+O -mstm8
+S .__.ABS. Def000000
+A _CODE size 0 flags 0 addr 0
+A DATA size 0 flags 0 addr 0
+A INITIALIZED size 0 flags 0 addr 0
+A DABS size 0 flags 8 addr 0
+A HOME size 0 flags 0 addr 0
+A GSINIT size 0 flags 0 addr 0
+A GSFINAL size 0 flags 0 addr 0
+A CODE size 94 flags 0 addr 0
+S _clk_set_source_auto Def000000
+S _clk_peripheral_disable Def00006A
+S _clk_peripheral_enable Def000037
+S _clk_set_hsidiv Def00000E
+S _clk_set_cpudiv Def000024
+A INITIALIZER size 0 flags 0 addr 0
+A CABS size 0 flags 8 addr 0
+T 00 00 00
+R 00 00 00 07
+T 00 00 00 AE 50 C5 F6 AA 02 F7 AE 50 C4 7B 03 F7
+R 00 00 00 07
+T 00 00 0D 81
+R 00 00 00 07
+T 00 00 0E
+R 00 00 00 07
+T 00 00 0E 88 AE 50 C6 F6 A4 E7 6B 01 7B 04 48 48
+R 00 00 00 07
+T 00 00 1B 48 1A 01 AE 50 C6 F7 84 81
+R 00 00 00 07
+T 00 00 24
+R 00 00 00 07
+T 00 00 24 88 AE 50 C6 F6 A4 F8 6B 01 7B 04 1A 01
+R 00 00 00 07
+T 00 00 31 AE 50 C6 F7 84 81
+R 00 00 00 07
+T 00 00 37
+R 00 00 00 07
+T 00 00 37 52 08 AE 50 C7 F6 95 7B 0C 6B 02 0F 01
+R 00 00 00 07
+T 00 00 44 4F 1A 01 02 1A 02 95 AE 50 C7 F7 AE
+R 00 00 00 07
+T 00 00 50 50 CA F6 95 0F 04 7B 0B 6B 08 4F 0F 05
+R 00 00 00 07
+T 00 00 5D 1A 05 02 1A 08 95 AE 50 CA F7 5B 08 81
+R 00 00 00 07
+T 00 00 6A
+R 00 00 00 07
+T 00 00 6A 52 06 AE 50 C7 F6 6B 06 7B 0A 95 4F 9E
+R 00 00 00 07
+T 00 00 77 43 14 06 AE 50 C7 F7 AE 50 CA F6 6B 05
+R 00 00 00 07
+T 00 00 84 0F 04 7B 09 0F 01 43 14 05 AE 50 CA F7
+R 00 00 00 07
+T 00 00 91 5B 06 81
+R 00 00 00 07

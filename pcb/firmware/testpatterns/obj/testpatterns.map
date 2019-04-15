@@ -1,0 +1,128 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           spi
+     00000000  l_CABS                          
+     00000000  l_DABS                          
+     00000000  l_INITIALIZED                   
+     00000000  l_INITIALIZER                   
+     00000000  l__CODE                         
+     00000000  s_CABS                          
+     00000000  s_DABS                          
+     00000000  s__CODE                         
+     00000001  l_SSEG                          
+     00000001  s_DATA                          
+     00000002  l_DATA                          
+     00000003  l_GSFINAL                       
+     00000003  s_INITIALIZED                   
+     00000003  s_SSEG                          
+     0000001E  l_GSINIT                        
+     00000083  l_HOME                          
+     000004A7  l_CODE                          
+     00008000  s_HOME                          
+     00008083  s_GSINIT                        
+     000080A1  s_GSFINAL                       
+     000080A4  s_CODE                          
+     0000854B  s_INITIALIZER                   
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+DATA                                00000001    00000002 =           2. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+SSEG                                00000003    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+HOME                                00008000    00000083 =         131. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT                              00008083    0000001E =          30. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSFINAL                             000080A1    00000003 =           3. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CODE                                000080A4    000004A7 =        1191. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000080A4  __delay_long                       testpatterns
+     000080CC  __delay                            testpatterns
+     000080F4  _display_mode                      testpatterns
+     00008132  _switch_mode                       testpatterns
+     0000816F  _send_data                         testpatterns
+     000081DC  _calcCRC                           testpatterns
+     00008234  _send_frame                        testpatterns
+     000082CD  _main                              testpatterns
+     00008362  _gpio_set                          gpio
+     00008369  _gpio_clr                          gpio
+     00008377  _gpio_mode                         gpio
+     0000847A  _gpio_toggle                       gpio
+     00008481  _gpio_read                         gpio
+     00008488  _gpio_write_port                   gpio
+     0000848E  _gpio_read_port                    gpio
+     00008493  _clk_set_source_auto               clk
+     000084A1  _clk_set_hsidiv                    clk
+     000084B7  _clk_set_cpudiv                    clk
+     000084CA  _clk_peripheral_enable             clk
+     000084FD  _clk_peripheral_disable            clk
+     00008527  _spi_txonly_start                  spi
+     0000852C  _spi_txonly_transmit               spi
+     0000853B  _spi_txonly_stop                   spi
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+
+Files Linked                              [ module(s) ]
+
+./obj/testpatterns.rel                    [ testpatterns ]
+./obj/gpio.rel                            [ gpio ]
+./obj/clk.rel                             [ clk ]
+./obj/spi.rel                             [ spi ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
+
+User Base Address Definitions
+
+HOME = 0x8000
+DATA = 0x0001
+
+

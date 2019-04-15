@@ -1,0 +1,167 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.5.0 #9253 (Mar 24 2016) (Linux)
+                                      4 ; This file was generated Sat May 12 12:35:38 2018
+                                      5 ;--------------------------------------------------------
+                                      6 	.module clk
+                                      7 	.optsdcc -mstm8
+                                      8 	
+                                      9 ;--------------------------------------------------------
+                                     10 ; Public variables in this module
+                                     11 ;--------------------------------------------------------
+                                     12 	.globl _clk_set_source_auto
+                                     13 	.globl _clk_set_hsidiv
+                                     14 	.globl _clk_set_cpudiv
+                                     15 	.globl _clk_peripheral_enable
+                                     16 	.globl _clk_peripheral_disable
+                                     17 ;--------------------------------------------------------
+                                     18 ; ram data
+                                     19 ;--------------------------------------------------------
+                                     20 	.area DATA
+                                     21 ;--------------------------------------------------------
+                                     22 ; ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area INITIALIZED
+                                     25 ;--------------------------------------------------------
+                                     26 ; absolute external ram data
+                                     27 ;--------------------------------------------------------
+                                     28 	.area DABS (ABS)
+                                     29 ;--------------------------------------------------------
+                                     30 ; global & static initialisations
+                                     31 ;--------------------------------------------------------
+                                     32 	.area HOME
+                                     33 	.area GSINIT
+                                     34 	.area GSFINAL
+                                     35 	.area GSINIT
+                                     36 ;--------------------------------------------------------
+                                     37 ; Home
+                                     38 ;--------------------------------------------------------
+                                     39 	.area HOME
+                                     40 	.area HOME
+                                     41 ;--------------------------------------------------------
+                                     42 ; code
+                                     43 ;--------------------------------------------------------
+                                     44 	.area CODE
+                                     45 ;	../../../../ulibSTM8/lib/clk.c: 5: void clk_set_source_auto(clk_source_t src)
+                                     46 ;	-----------------------------------------
+                                     47 ;	 function clk_set_source_auto
+                                     48 ;	-----------------------------------------
+      000000                         49 _clk_set_source_auto:
+                                     50 ;	../../../../ulibSTM8/lib/clk.c: 7: clk->swcr |= CLK_SWCR_SWEN; // enable automatic clock switching 
+      000000 AE 50 C5         [ 2]   51 	ldw	x, #0x50c5
+      000003 F6               [ 1]   52 	ld	a, (x)
+      000004 AA 02            [ 1]   53 	or	a, #0x02
+      000006 F7               [ 1]   54 	ld	(x), a
+                                     55 ;	../../../../ulibSTM8/lib/clk.c: 8: clk->swr = src; // initiate switch to new source
+      000007 AE 50 C4         [ 2]   56 	ldw	x, #0x50c4
+      00000A 7B 03            [ 1]   57 	ld	a, (0x03, sp)
+      00000C F7               [ 1]   58 	ld	(x), a
+      00000D 81               [ 4]   59 	ret
+                                     60 ;	../../../../ulibSTM8/lib/clk.c: 11: void clk_set_hsidiv(clk_hsidiv_t div)
+                                     61 ;	-----------------------------------------
+                                     62 ;	 function clk_set_hsidiv
+                                     63 ;	-----------------------------------------
+      00000E                         64 _clk_set_hsidiv:
+      00000E 88               [ 1]   65 	push	a
+                                     66 ;	../../../../ulibSTM8/lib/clk.c: 13: clk->ckdivr = (clk->ckdivr & (~CLK_CKDIVR_HSI_MASK)) | (div << CLK_CKDIVR_HSI_POS);  
+      00000F AE 50 C6         [ 2]   67 	ldw	x, #0x50c6
+      000012 F6               [ 1]   68 	ld	a, (x)
+      000013 A4 E7            [ 1]   69 	and	a, #0xe7
+      000015 6B 01            [ 1]   70 	ld	(0x01, sp), a
+      000017 7B 04            [ 1]   71 	ld	a, (0x04, sp)
+      000019 48               [ 1]   72 	sll	a
+      00001A 48               [ 1]   73 	sll	a
+      00001B 48               [ 1]   74 	sll	a
+      00001C 1A 01            [ 1]   75 	or	a, (0x01, sp)
+      00001E AE 50 C6         [ 2]   76 	ldw	x, #0x50c6
+      000021 F7               [ 1]   77 	ld	(x), a
+      000022 84               [ 1]   78 	pop	a
+      000023 81               [ 4]   79 	ret
+                                     80 ;	../../../../ulibSTM8/lib/clk.c: 16: void clk_set_cpudiv(clk_cpudiv_t div)
+                                     81 ;	-----------------------------------------
+                                     82 ;	 function clk_set_cpudiv
+                                     83 ;	-----------------------------------------
+      000024                         84 _clk_set_cpudiv:
+      000024 88               [ 1]   85 	push	a
+                                     86 ;	../../../../ulibSTM8/lib/clk.c: 18: clk->ckdivr = (clk->ckdivr & (~CLK_CKDIVR_CPU_MASK)) | (div << CLK_CKDIVR_CPU_POS);  
+      000025 AE 50 C6         [ 2]   87 	ldw	x, #0x50c6
+      000028 F6               [ 1]   88 	ld	a, (x)
+      000029 A4 F8            [ 1]   89 	and	a, #0xf8
+      00002B 6B 01            [ 1]   90 	ld	(0x01, sp), a
+      00002D 7B 04            [ 1]   91 	ld	a, (0x04, sp)
+      00002F 1A 01            [ 1]   92 	or	a, (0x01, sp)
+      000031 AE 50 C6         [ 2]   93 	ldw	x, #0x50c6
+      000034 F7               [ 1]   94 	ld	(x), a
+      000035 84               [ 1]   95 	pop	a
+      000036 81               [ 4]   96 	ret
+                                     97 ;	../../../../ulibSTM8/lib/clk.c: 21: void clk_peripheral_enable(clk_peripheral_t per)
+                                     98 ;	-----------------------------------------
+                                     99 ;	 function clk_peripheral_enable
+                                    100 ;	-----------------------------------------
+      000037                        101 _clk_peripheral_enable:
+      000037 52 08            [ 2]  102 	sub	sp, #8
+                                    103 ;	../../../../ulibSTM8/lib/clk.c: 23: clk->pckenr1 |= per & 0xFF;
+      000039 AE 50 C7         [ 2]  104 	ldw	x, #0x50c7
+      00003C F6               [ 1]  105 	ld	a, (x)
+      00003D 95               [ 1]  106 	ld	xh, a
+      00003E 7B 0C            [ 1]  107 	ld	a, (0x0c, sp)
+      000040 6B 02            [ 1]  108 	ld	(0x02, sp), a
+      000042 0F 01            [ 1]  109 	clr	(0x01, sp)
+      000044 4F               [ 1]  110 	clr	a
+      000045 1A 01            [ 1]  111 	or	a, (0x01, sp)
+      000047 02               [ 1]  112 	rlwa	x
+      000048 1A 02            [ 1]  113 	or	a, (0x02, sp)
+      00004A 95               [ 1]  114 	ld	xh, a
+      00004B AE 50 C7         [ 2]  115 	ldw	x, #0x50c7
+      00004E F7               [ 1]  116 	ld	(x), a
+                                    117 ;	../../../../ulibSTM8/lib/clk.c: 24: clk->pckenr2 |= (per & 0xFF00) >> 8;
+      00004F AE 50 CA         [ 2]  118 	ldw	x, #0x50ca
+      000052 F6               [ 1]  119 	ld	a, (x)
+      000053 95               [ 1]  120 	ld	xh, a
+      000054 0F 04            [ 1]  121 	clr	(0x04, sp)
+      000056 7B 0B            [ 1]  122 	ld	a, (0x0b, sp)
+      000058 6B 08            [ 1]  123 	ld	(0x08, sp), a
+      00005A 4F               [ 1]  124 	clr	a
+      00005B 0F 05            [ 1]  125 	clr	(0x05, sp)
+      00005D 1A 05            [ 1]  126 	or	a, (0x05, sp)
+      00005F 02               [ 1]  127 	rlwa	x
+      000060 1A 08            [ 1]  128 	or	a, (0x08, sp)
+      000062 95               [ 1]  129 	ld	xh, a
+      000063 AE 50 CA         [ 2]  130 	ldw	x, #0x50ca
+      000066 F7               [ 1]  131 	ld	(x), a
+      000067 5B 08            [ 2]  132 	addw	sp, #8
+      000069 81               [ 4]  133 	ret
+                                    134 ;	../../../../ulibSTM8/lib/clk.c: 27: void clk_peripheral_disable(clk_peripheral_t per)
+                                    135 ;	-----------------------------------------
+                                    136 ;	 function clk_peripheral_disable
+                                    137 ;	-----------------------------------------
+      00006A                        138 _clk_peripheral_disable:
+      00006A 52 06            [ 2]  139 	sub	sp, #6
+                                    140 ;	../../../../ulibSTM8/lib/clk.c: 29: clk->pckenr1 &= ~(per & 0xFF);
+      00006C AE 50 C7         [ 2]  141 	ldw	x, #0x50c7
+      00006F F6               [ 1]  142 	ld	a, (x)
+      000070 6B 06            [ 1]  143 	ld	(0x06, sp), a
+      000072 7B 0A            [ 1]  144 	ld	a, (0x0a, sp)
+      000074 95               [ 1]  145 	ld	xh, a
+      000075 4F               [ 1]  146 	clr	a
+      000076 9E               [ 1]  147 	ld	a, xh
+      000077 43               [ 1]  148 	cpl	a
+      000078 14 06            [ 1]  149 	and	a, (0x06, sp)
+      00007A AE 50 C7         [ 2]  150 	ldw	x, #0x50c7
+      00007D F7               [ 1]  151 	ld	(x), a
+                                    152 ;	../../../../ulibSTM8/lib/clk.c: 30: clk->pckenr2 &= ~((per & 0xFF00) >> 8);
+      00007E AE 50 CA         [ 2]  153 	ldw	x, #0x50ca
+      000081 F6               [ 1]  154 	ld	a, (x)
+      000082 6B 05            [ 1]  155 	ld	(0x05, sp), a
+      000084 0F 04            [ 1]  156 	clr	(0x04, sp)
+      000086 7B 09            [ 1]  157 	ld	a, (0x09, sp)
+      000088 0F 01            [ 1]  158 	clr	(0x01, sp)
+      00008A 43               [ 1]  159 	cpl	a
+      00008B 14 05            [ 1]  160 	and	a, (0x05, sp)
+      00008D AE 50 CA         [ 2]  161 	ldw	x, #0x50ca
+      000090 F7               [ 1]  162 	ld	(x), a
+      000091 5B 06            [ 2]  163 	addw	sp, #6
+      000093 81               [ 4]  164 	ret
+                                    165 	.area CODE
+                                    166 	.area INITIALIZER
+                                    167 	.area CABS (ABS)
